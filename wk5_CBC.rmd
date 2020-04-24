@@ -1,5 +1,5 @@
 ---
-title: "wk5.CBC"
+title: "wk5_CBC"
 author: "Patrick Lac"
 date: "April 24, 2020"
 output: 
