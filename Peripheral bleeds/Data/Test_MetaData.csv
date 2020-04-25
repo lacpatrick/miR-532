@@ -57,10 +57,10 @@ miR532.30,PL_miR BMT_532_9,575369,2L,232619,PL,miR-532,Male,2019-11-05,2020-01-2
 miR532.31,PL_miR BMT_532_10,575372,R,232620,PL,miR-532,Male,2019-11-05,2020-01-24,NA,NA,Alive,Healthy.miR532,NA
 miR532.32,PL_miR BMT_532_11,575373,B,232620,PL,miR-532,Male,2019-11-05,2020-01-24,NA,NA,Alive,Healthy.miR532,NA
 miR532.33,PL_miR BMT_532_12,575374,2R,232620,PL,miR-532,Male,2019-11-05,2020-01-24,NA,NA,Alive,Healthy.miR532,NA
-MIG.55,MB_miR BMT_MIG_6,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
-MIG.56,MB_miR BMT_MIG_7,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
-MIG.57,MB_miR BMT_MIG_8,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
-MIG.58,MB_miR BMT_MIG_9,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
-MIG.59,MB_miR BMT_MIG_10,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
-MIG.60,MB_miR BMT_MIG_11,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
-MIG.61,MB_miR BMT_MIG_12,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
+MIG.55,MB_miR BMT_MIG_55,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
+MIG.56,MB_miR BMT_MIG_56,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
+MIG.57,MB_miR BMT_MIG_57,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
+MIG.58,MB_miR BMT_MIG_58,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
+MIG.59,MB_miR BMT_MIG_59,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
+MIG.60,MB_miR BMT_MIG_60,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
+MIG.61,MB_miR BMT_MIG_61,NA,NA,NA,MB,control,Male,NA,NA,NA,NA,Alive,Control,NA
