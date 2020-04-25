@@ -382,7 +382,7 @@ all.miR532 <-subset(alldata.sub, Treatment == "miR-532")
 
 Now let's make dot plots for the CBC data by transplanter
 ``` {r transplanter.WBC, fig.width=4, fig.height=4}
-transplanter.WBC.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=WBC, fill=Transplant.performed.by.)) +
+transplanter.WBC.control <- ggplot(all.control, aes(x=Transplanter, y=WBC, fill=Transplanter)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
@@ -394,7 +394,7 @@ transplanter.WBC.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.WBC.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=WBC, fill=Transplant.performed.by.)) +
+transplanter.WBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=WBC, fill=Transplanter)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
@@ -408,7 +408,7 @@ transplanter.WBC.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.RBC, fig.width=4, fig.height=4}
-transplanter.RBC.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=RBC, fill=Transplant.performed.by.)) +
+transplanter.RBC.control <- ggplot(all.control, aes(x=Transplanter, y=RBC, fill=Transplanter)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
@@ -420,7 +420,7 @@ transplanter.RBC.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.RBC.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=RBC, fill=Transplant.performed.by.)) +
+transplanter.RBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RBC, fill=Transplanter)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
@@ -434,7 +434,7 @@ transplanter.RBC.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.HGB, fig.width=4, fig.height=4}
-transplanter.HGB.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=HGB, fill=Transplant.performed.by.)) +
+transplanter.HGB.control <- ggplot(all.control, aes(x=Transplanter, y=HGB, fill=Transplanter)) +
    stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
@@ -446,7 +446,7 @@ transplanter.HGB.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.HGB.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=HGB, fill=Transplant.performed.by.)) +
+transplanter.HGB.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HGB, fill=Transplanter)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
@@ -460,7 +460,7 @@ transplanter.HGB.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.HCT, fig.width=4, fig.height=4}
-transplanter.HCT.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=HCT, fill=Transplant.performed.by.)) +
+transplanter.HCT.control <- ggplot(all.control, aes(x=Transplanter, y=HCT, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
@@ -472,7 +472,7 @@ transplanter.HCT.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.HCT.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=HCT, fill=Transplant.performed.by.)) +
+transplanter.HCT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HCT, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
@@ -486,7 +486,7 @@ transplanter.HCT.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.MCV, fig.width=4, fig.height=4}
-transplanter.MCV.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=MCV, fill=Transplant.performed.by.)) +
+transplanter.MCV.control <- ggplot(all.control, aes(x=Transplanter, y=MCV, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
@@ -498,7 +498,7 @@ transplanter.MCV.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.MCV.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=MCV, fill=Transplant.performed.by.)) +
+transplanter.MCV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCV, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
@@ -512,7 +512,7 @@ transplanter.MCV.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.MCH, fig.width=4, fig.height=4}
-transplanter.MCH.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=MCH, fill=Transplant.performed.by.)) +
+transplanter.MCH.control <- ggplot(all.control, aes(x=Transplanter, y=MCH, fill=Transplanter)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
@@ -524,7 +524,7 @@ transplanter.MCH.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.MCH.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=MCH, fill=Transplant.performed.by.)) +
+transplanter.MCH.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCH, fill=Transplanter)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
@@ -538,7 +538,7 @@ transplanter.MCH.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.MCHC, fig.width=4, fig.height=4}
-transplanter.MCHC.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=MCHC, fill=Transplant.performed.by.)) +
+transplanter.MCHC.control <- ggplot(all.control, aes(x=Transplanter, y=MCHC, fill=Transplanter)) +
 stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
@@ -550,7 +550,7 @@ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="err
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.MCHC.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=MCHC, fill=Transplant.performed.by.)) +
+transplanter.MCHC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCHC, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
@@ -564,7 +564,7 @@ transplanter.MCHC.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y
 ```
 
 ``` {r transplanter.PLT, fig.width=4, fig.height=4}
-transplanter.PLT.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=PLT, fill=Transplant.performed.by.)) +
+transplanter.PLT.control <- ggplot(all.control, aes(x=Transplanter, y=PLT, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
@@ -576,7 +576,7 @@ transplanter.PLT.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.PLT.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=PLT, fill=Transplant.performed.by.)) +
+transplanter.PLT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=PLT, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
@@ -590,7 +590,7 @@ transplanter.PLT.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.MPV, fig.width=4, fig.height=4}
-transplanter.MPV.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=MPV, fill=Transplant.performed.by.)) +
+transplanter.MPV.control <- ggplot(all.control, aes(x=Transplanter, y=MPV, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
@@ -602,7 +602,7 @@ transplanter.MPV.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.MPV.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=MPV, fill=Transplant.performed.by.)) +
+transplanter.MPV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MPV, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
@@ -616,7 +616,7 @@ transplanter.MPV.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.RDW, fig.width=4, fig.height=4}
-transplanter.RDW.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=RDW, fill=Transplant.performed.by.)) +
+transplanter.RDW.control <- ggplot(all.control, aes(x=Transplanter, y=RDW, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
@@ -628,7 +628,7 @@ transplanter.RDW.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.RDW.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=RDW, fill=Transplant.performed.by.)) +
+transplanter.RDW.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RDW, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
@@ -642,7 +642,7 @@ transplanter.RDW.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=
 ```
 
 ``` {r transplanter.Number.Lym, fig.width=4, fig.height=4}
-transplanter.Number.Lym.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=Number.Lym, fill=Transplant.performed.by.)) +
+transplanter.Number.Lym.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Lym, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
@@ -654,7 +654,7 @@ transplanter.Number.Lym.control <- ggplot(all.control, aes(x=Transplant.performe
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.Number.Lym.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=Number.Lym, fill=Transplant.performed.by.)) +
+transplanter.Number.Lym.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Lym, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
@@ -668,7 +668,7 @@ transplanter.Number.Lym.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.
 ```
 
 ``` {r transplanter.Number.Mon, fig.width=4, fig.height=4}
-transplanter.Number.Mon.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=Number.Mon, fill=Transplant.performed.by.)) +
+transplanter.Number.Mon.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Mon, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
@@ -680,7 +680,7 @@ transplanter.Number.Mon.control <- ggplot(all.control, aes(x=Transplant.performe
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.Number.Mon.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=Number.Mon, fill=Transplant.performed.by.)) +
+transplanter.Number.Mon.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Mon, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
@@ -694,7 +694,7 @@ transplanter.Number.Mon.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.
 ```
 
 ``` {r transplanter.Number.Gra, fig.width=4, fig.height=4}
-transplanter.Number.Gra.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=Number.Gra, fill=Transplant.performed.by.)) +
+transplanter.Number.Gra.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Gra, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
@@ -706,7 +706,7 @@ transplanter.Number.Gra.control <- ggplot(all.control, aes(x=Transplant.performe
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.Number.Gra.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=Number.Gra, fill=Transplant.performed.by.)) +
+transplanter.Number.Gra.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Gra, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
@@ -720,7 +720,7 @@ transplanter.Number.Gra.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.
 ```
 
 ``` {r transplanter.GFP, fig.width=4, fig.height=4}
-transplanter.GFP.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=GFP, fill=Transplant.performed.by.)) +
+transplanter.GFP.control <- ggplot(all.control, aes(x=Transplanter, y=GFP, fill=Transplanter)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
@@ -732,7 +732,7 @@ transplanter.GFP.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
   theme(legend.position="none")
 
-transplanter.GFP.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=GFP, fill=Transplant.performed.by.)) +
+transplanter.GFP.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=GFP, fill=Transplanter)) +
 stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 

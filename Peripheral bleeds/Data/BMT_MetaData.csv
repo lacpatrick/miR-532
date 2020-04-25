@@ -1,4 +1,4 @@
-﻿Sample,Original.label,Mouse ID,Mark,Cage,Transplant performed by:,Treatment,Gender,Birth Date,Transplant Date,Date of death,Weeks post-transplant at death,Status,Group,Reason for death
+﻿Sample,Original.label,Mouse ID,Mark,Cage,Transplanter,Treatment,Gender,Birth Date,Transplant Date,Date of death,Weeks post-transplant at death,Status,Group,Reason for death
 MIG.1,BMT1.MIG (NEP cage 1/2),NA,N,NA,Jeff.Lam,control,Male,2011-08-19,2011-10-22,2012-10-04,49.71,Dead.endpoint,Control,NA
 MIG.2,BMT1.MIG (REP cage 1/2),NA,R,NA,Jeff.Lam,control,Male,2011-08-19,2011-10-22,2012-10-04,49.71,Dead.endpoint,Control,NA
 MIG.3,BMT1.MIG (BEP cage 2/2),NA,B,NA,Jeff.Lam,control,Male,2011-08-19,2011-10-22,2012-10-01,49.29,Dead.endpoint,Control,NA
