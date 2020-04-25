@@ -23,10 +23,10 @@ library(gridExtra)
 Let's begin by importing our data:
 
 ``` {r import.data}
-metadata <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR532_BMT/Peripheral_Bleeds/Data/BMT_MetaData.csv")
-JL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR532_BMT/Peripheral_Bleeds/Data/JL_532_BMT_Data.csv")
-MB_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR532_BMT/Peripheral_Bleeds/Data/MB_532_BMT_Data.csv")
-PL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR532_BMT/Peripheral_Bleeds/Data/PL_532_BMT_Data.csv")
+metadata <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/BMT_MetaData.csv")
+JL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/JL_532_BMT_Data.csv")
+MB_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/MB_532_BMT_Data.csv")
+PL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/PL_532_BMT_Data.csv")
 ```
 
 Next lets attach the different peripheral blood data together:
