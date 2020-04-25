@@ -26,16 +26,16 @@ miR532.13,BMT2.532-OE (cage 4/4 NEP),NA,N,NA,Jeff.Lam,miR-532,Male,2011-12-07,20
 miR532.14,BMT2.532-OE (cage 3/4 NEP),NA,N,NA,Jeff.Lam,miR-532,Male,2011-12-07,2011-12-07,2013-06-05,78,Dead.endpoint,Healthy.miR532,Liver tumor.  Did not process further.
 miR532.15,BMT2.532-OE (cage 2/4 REP),NA,R,NA,Jeff.Lam,miR-532,Male,2011-12-07,2011-12-07,2012-09-05,39,Dead.sick,Sick.miR532,Separated for fighting. Found dead Sept 5 2012
 miR532.16,BMT2.532-OE (cage 1/4 BEP),NA,B,NA,Jeff.Lam,miR-532,Male,2011-12-07,2011-12-07,2012-08-15,36,Dead.sick,Sick.miR532,"Hunched and slow, score 3 (Aug 14 2012); upgraded to score 4 (Aug 15 2012)"
-MIG.12,MB_miR BMT_MIG_1,325236,L,NA,Marion.van.den.Bosch ,control,Male,2018-01-09,2018-03-28,2019-03-22,51.29,Dead.endpoint,Control,end point
-MIG.13,MB_miR BMT_MIG_2,325237,B,NA,Marion.van.den.Bosch ,control,Male,2018-01-09,2018-03-28,2019-03-22,51.29,Dead.endpoint,Control,end point
-MIG.14,MB_miR BMT_MIG_3,325238,N,NA,Marion.van.den.Bosch ,control,Male,2018-01-09,2018-03-28,2019-03-22,51.29,Dead.endpoint,Control,end point
-MIG.15,MB_miR BMT_MIG_4,325239,R,NA,Marion.van.den.Bosch ,control,Male,2018-01-09,2018-03-28,2018-08-12,19.57,Dead.endpoint,Control,general illness. Poor recovery after bone marrow aspirate; censored.
-MIG.16,MB_miR BMT_MIG_5,325240,L,NA,Marion.van.den.Bosch ,control,Male,2018-01-09,2018-03-28,2018-10-27,30.43,Dead.endpoint,Control,"general illness, eyes bulged, hunched. Poor recovery after peripheral bleed; censored."
-miR532.17,MB_miR BMT_532_1,325241,B,NA,Marion.van.den.Bosch ,miR-532,Male,2018-01-09,2018-03-28,2019-03-21,51.14,Dead.endpoint,Healthy.miR532,end point
-miR532.18,MB_miR BMT_532_2,325242,N,NA,Marion.van.den.Bosch ,miR-532,Male,2018-01-09,2018-03-28,2019-03-21,51.14,Dead.endpoint,Healthy.miR532,end point
-miR532.19,MB_miR BMT_532_3,325243,R,NA,Marion.van.den.Bosch ,miR-532,Male,2018-01-09,2018-03-28,2019-03-15,50.29,Dead.endpoint,Healthy.miR532,end point
-miR532.20,MB_miR BMT_532_4,325244,L,NA,Marion.van.den.Bosch ,miR-532,Male,2018-01-09,2018-03-28,2019-03-15,50.29,Dead.endpoint,Healthy.miR532,end point
-miR532.21,MB_miR BMT_532_5,325245,B,NA,Marion.van.den.Bosch ,miR-532,Male,2018-01-09,2018-03-28,2019-02-20,47,Dead.sick,Sick.532,general illness
+MIG.12,MB_miR BMT_MIG_1,325236,L,NA,Marion.van.den.Bosch,control,Male,2018-01-09,2018-03-28,2019-03-22,51.29,Dead.endpoint,Control,end point
+MIG.13,MB_miR BMT_MIG_2,325237,B,NA,Marion.van.den.Bosch,control,Male,2018-01-09,2018-03-28,2019-03-22,51.29,Dead.endpoint,Control,end point
+MIG.14,MB_miR BMT_MIG_3,325238,N,NA,Marion.van.den.Bosch,control,Male,2018-01-09,2018-03-28,2019-03-22,51.29,Dead.endpoint,Control,end point
+MIG.15,MB_miR BMT_MIG_4,325239,R,NA,Marion.van.den.Bosch,control,Male,2018-01-09,2018-03-28,2018-08-12,19.57,Dead.endpoint,Control,general illness. Poor recovery after bone marrow aspirate; censored.
+MIG.16,MB_miR BMT_MIG_5,325240,L,NA,Marion.van.den.Bosch,control,Male,2018-01-09,2018-03-28,2018-10-27,30.43,Dead.endpoint,Control,"general illness, eyes bulged, hunched. Poor recovery after peripheral bleed; censored."
+miR532.17,MB_miR BMT_532_1,325241,B,NA,Marion.van.den.Bosch,miR-532,Male,2018-01-09,2018-03-28,2019-03-21,51.14,Dead.endpoint,Healthy.miR532,end point
+miR532.18,MB_miR BMT_532_2,325242,N,NA,Marion.van.den.Bosch,miR-532,Male,2018-01-09,2018-03-28,2019-03-21,51.14,Dead.endpoint,Healthy.miR532,end point
+miR532.19,MB_miR BMT_532_3,325243,R,NA,Marion.van.den.Bosch,miR-532,Male,2018-01-09,2018-03-28,2019-03-15,50.29,Dead.endpoint,Healthy.miR532,end point
+miR532.20,MB_miR BMT_532_4,325244,L,NA,Marion.van.den.Bosch,miR-532,Male,2018-01-09,2018-03-28,2019-03-15,50.29,Dead.endpoint,Healthy.miR532,end point
+miR532.21,MB_miR BMT_532_5,325245,B,NA,Marion.van.den.Bosch,miR-532,Male,2018-01-09,2018-03-28,2019-02-20,47,Dead.sick,Sick.532,general illness
 MIG.17,PL_miR BMT_MIG_1,562212,N,227131,Patrick.Lac,control,Male,2019-09-17,2019-12-05,NA,NA,Alive,Control,NA
 MIG.18,PL_miR BMT_MIG_2,562213,L,227131,Patrick.Lac,control,Male,2019-09-17,2019-12-05,NA,NA,Alive,Control,NA
 MIG.19,PL_miR BMT_MIG_3,562222,R,227133,Patrick.Lac,control,Male,2019-09-17,2019-12-19,NA,NA,Alive,Control,NA
