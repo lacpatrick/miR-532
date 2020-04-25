@@ -378,24 +378,3 @@ Now let's make dot plots for the CBC data by transplanter
 ## Patrick.Lac-Marion.van.den.Bosch   0.002222222 -1.648640  1.6530848 0.9999937
 ```
 
-
-```
-##                          Df Sum Sq Mean Sq F value Pr(>F)
-## Transplant.performed.by.  2   0.05   0.027   0.008  0.992
-## Residuals                22  71.36   3.244
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = RBC ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                           diff       lwr      upr     p adj
-## Marion.van.den.Bosch -Jeff.Lam    -0.117454545 -2.557663 2.322754 0.9919752
-## Patrick.Lac-Jeff.Lam              -0.002121212 -2.035628 2.031386 0.9999962
-## Patrick.Lac-Marion.van.den.Bosch   0.115333333 -2.408183 2.638849 0.9927617
-```
-
-![](wk11_CBC_files/figure-html/pairwise_test-1.png)<!-- -->

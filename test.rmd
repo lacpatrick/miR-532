@@ -1,5 +1,5 @@
 ---
-title: "wk11_CBC"
+title: "Test"
 author: "Patrick Lac"
 date: "April 24, 2020"
 output: 
@@ -874,3 +874,37 @@ tukey.Number.Gra <- aov(Number.Gra ~ Transplant.performed.by., data=all.control)
 tukey.Number.Gra
 ```
 
+``` {r pairwise_test, fig.width=6, fig.height=4}
+pair_comparisons <- list( c("Jeff.Lam", "Marion.van.den.Bosch"), c("Marion.van.den.Bosch", "Patrick.Lac"), c("Jeff.Lam", "Patrick.Lac"))
+
+comparison.test.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=RBC, fill=Transplant.performed.by.)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  ylim(0, 15) +
+  labs(title = "Test", x = "Transplanter", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  stat_compare_means(comparisons=pair_comparisons, label="p.signif", label.y = 50)
+  
+
+comparison.test.miR532 <- ggplot(all.miR532, aes(x=Transplant.performed.by., y=RBC, fill=Transplant.performed.by.)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  ylim(0, 15) +
+  labs(title = "Red blood cells - miR-532", x = "Transplanter", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  stat_compare_means(test="kruskal.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+
+anova.test <- aov(RBC ~ Transplant.performed.by., data=all.control)
+summary(anova.test)
+tukey.test <-TukeyHSD(anova.test)
+tukey.test
+
+
+comparison.test.control
+```
