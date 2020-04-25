@@ -178,6 +178,262 @@ miR532-8, 55.0, 2.3, 0.4, 2.6
 We begin by joining the metadata to the week 11 CBC data
 
 
+First, let's take a look at our statistics
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~   0.0625   -2.16       2.28 0.997 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~   1.09     -0.568      2.74 0.253 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~   1.03     -1.28       3.33 0.524 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~    0.595   -0.227      1.42 1.92e-1 ns          
+## 2 Transp~ Jeff.Lam   Patrick.L~    1.08     0.470      1.70 4.07e-4 ***         
+## 3 Transp~ Marion.va~ Patrick.L~    0.487   -0.366      1.34 3.50e-1 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~    0.340   -0.607      1.29 0.654   ns          
+## 2 Transp~ Jeff.Lam   Patrick.L~    0.950    0.244      1.66 0.00654 **          
+## 3 Transp~ Marion.va~ Patrick.L~    0.610   -0.374      1.59 0.292   ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~     4.12     1.05      7.19 6.69e-3 **          
+## 2 Transp~ Jeff.Lam   Patrick.L~     5.72     3.44      8.01 2.55e-6 ****        
+## 3 Transp~ Marion.va~ Patrick.L~     1.60    -1.58      4.79 4.39e-1 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~    1.51    -0.232      3.26 0.0993 ns          
+## 2 Transpl~ Jeff.Lam   Patrick.L~    0.812   -0.488      2.11 0.287  ns          
+## 3 Transpl~ Marion.va~ Patrick.L~   -0.700   -2.51       1.11 0.612  ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~   -0.421   -0.907    0.0645 0.0991  ns          
+## 2 Transp~ Jeff.Lam   Patrick.L~   -0.481   -0.843   -0.119  0.00727 **          
+## 3 Transp~ Marion.va~ Patrick.L~   -0.06    -0.565    0.445  0.954   ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2    estimate conf.low conf.high    p.adj p.adj.signif
+## * <chr>   <chr>      <chr>        <dbl>    <dbl>     <dbl>    <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.v~   -1.90    -2.44     -1.36  3.61e- 9 ****        
+## 2 Transp~ Jeff.Lam   Patrick.~   -1.72    -2.13     -1.32  4.06e-11 ****        
+## 3 Transp~ Marion.va~ Patrick.~    0.175   -0.388     0.738 7.26e- 1 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~   -259.    -517.      0.110 0.0501 ns          
+## 2 Transpl~ Jeff.Lam   Patrick.L~    -34.8   -228.    158.    0.897  ns          
+## 3 Transpl~ Marion.va~ Patrick.L~    224.     -45.0   493.    0.117  ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~  -0.0213  -1.72        1.67 0.999   ns          
+## 2 Transp~ Jeff.Lam   Patrick.L~   1.76     0.497       3.02 0.00485 **          
+## 3 Transp~ Marion.va~ Patrick.L~   1.78     0.0207      3.54 0.0469  *
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~   -259.    -517.      0.110 0.0501 ns          
+## 2 Transpl~ Jeff.Lam   Patrick.L~    -34.8   -228.    158.    0.897  ns          
+## 3 Transpl~ Marion.va~ Patrick.L~    224.     -45.0   493.    0.117  ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~     1.39   -0.240      3.02 1.06e-1 ns          
+## 2 Transp~ Jeff.Lam   Patrick.L~     2.55    1.34       3.76 4.14e-5 ****        
+## 3 Transp~ Marion.va~ Patrick.L~     1.16   -0.533      2.85 2.26e-1 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~   0.0625  -0.129      0.254 0.702 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~   0.104   -0.0383     0.247 0.186 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~   0.0417  -0.157      0.240 0.863 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~   -1.39     -2.50    -0.279 1.18e-2 *           
+## 2 Transp~ Jeff.Lam   Patrick.L~   -1.59     -2.42    -0.763 1.41e-4 ***         
+## 3 Transp~ Marion.va~ Patrick.L~   -0.202    -1.36     0.953 9.03e-1 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~   -30.0    -48.6     -11.3  0.00121 **          
+## 2 Transp~ Jeff.Lam   Patrick.L~    -8.73   -22.6       5.17 0.284   ns          
+## 3 Transp~ Marion.va~ Patrick.L~    21.2      1.85     40.6  0.0295  *
+```
+
+
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~   -1.12     -4.75      2.50 0.72  ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~    0.396    -2.62      3.42 0.942 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~    1.52     -2.23      5.27 0.574 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~ -0.117      -2.56      2.32 0.992 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~ -0.00212    -2.04      2.03 1     ns          
+## 3 Transpl~ Marion.van~ Patrick.L~  0.115      -2.41      2.64 0.993 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~   -0.858    -4.20      2.48 0.797 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~   -0.552    -3.34      2.23 0.873 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~    0.307    -3.15      3.76 0.973 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~    0.885    -9.53      11.3 0.975 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~    1.38     -7.30      10.1 0.916 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~    0.493   -10.3       11.3 0.993 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~    1.27    -1.44       3.99 0.479 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~    1.72    -0.546      3.98 0.161 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~    0.444   -2.36       3.25 0.917 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~   -0.700   -1.31   -0.0927  0.022  *           
+## 2 Transpl~ Jeff.Lam   Patrick.L~   -0.5     -1.01    0.00609 0.0532 ns          
+## 3 Transpl~ Marion.va~ Patrick.L~    0.200   -0.428   0.828   0.707  ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~  -2.38      -3.55     -1.21 1.13e-4 ***         
+## 2 Transp~ Jeff.Lam   Patrick.L~  -2.29      -3.26     -1.31 1.81e-5 ****        
+## 3 Transp~ Marion.va~ Patrick.L~   0.0978    -1.11      1.31 9.78e-1 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~   -214.    -465.       37.6 0.106  ns          
+## 2 Transpl~ Jeff.Lam   Patrick.L~     63.8   -146.      273.  0.727  ns          
+## 3 Transpl~ Marion.va~ Patrick.L~    278.      17.6     537.  0.0349 *
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
+## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.va~ -0.00909   -1.40       1.38 1       ns          
+## 2 Transp~ Jeff.Lam   Patrick.L~  1.69       0.535      2.85 0.00366 **          
+## 3 Transp~ Marion.va~ Patrick.L~  1.70       0.265      3.13 0.0184  *
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~   -214.    -465.       37.6 0.106  ns          
+## 2 Transpl~ Jeff.Lam   Patrick.L~     63.8   -146.      273.  0.727  ns          
+## 3 Transpl~ Marion.va~ Patrick.L~    278.      17.6     537.  0.0349 *
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~    0.629   -1.61       2.87 0.762  ns          
+## 2 Transpl~ Jeff.Lam   Patrick.L~    2.09     0.222      3.95 0.0264 *           
+## 3 Transpl~ Marion.va~ Patrick.L~    1.46    -0.856      3.77 0.274  ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~ -0.0527    -0.375     0.270 0.912 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~  0.00505   -0.264     0.274 0.999 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~  0.0578    -0.276     0.391 0.901 ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
+## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam   Marion.va~ -1.70       -3.29    -0.102 0.0357 *           
+## 2 Transpl~ Jeff.Lam   Patrick.L~ -1.70       -3.03    -0.366 0.011  *           
+## 3 Transpl~ Marion.va~ Patrick.L~  0.00222    -1.65     1.65  1      ns
+```
+
+```
+## # A tibble: 3 x 8
+##   term    group1     group2    estimate conf.low conf.high    p.adj p.adj.signif
+## * <chr>   <chr>      <chr>        <dbl>    <dbl>     <dbl>    <dbl> <chr>       
+## 1 Transp~ Jeff.Lam   Marion.v~    -69.4    -91.2     -47.5  1.81e-7 ****        
+## 2 Transp~ Jeff.Lam   Patrick.~    -28.7    -46.9     -10.5  1.86e-3 **          
+## 3 Transp~ Marion.va~ Patrick.~     40.7     18.1      63.3  4.71e-4 ***
+```
+
 Now let's make dot plots for the CBC data by transplanter
 
 
@@ -209,172 +465,4 @@ Now let's make dot plots for the CBC data by transplanter
 
 ![](wk11_CBC_files/figure-html/transplanter-1.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-2.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-3.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-4.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-5.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-6.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-7.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-8.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-9.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-10.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-11.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-12.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-13.png)<!-- -->![](wk11_CBC_files/figure-html/transplanter-14.png)<!-- -->
 
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = WBC ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                        diff       lwr      upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -1.1218182 -4.745503 2.501867 0.7203266
-## Patrick.Lac-Jeff.Lam              0.3959596 -2.623778 3.415697 0.9421021
-## Patrick.Lac-Marion.van.den.Bosch  1.5177778 -2.229618 5.265173 0.5739565
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = RBC ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                          diff       lwr      upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -0.117454545 -2.557663 2.322754 0.9919752
-## Patrick.Lac-Jeff.Lam             -0.002121212 -2.035628 2.031386 0.9999962
-## Patrick.Lac-Marion.van.den.Bosch  0.115333333 -2.408183 2.638849 0.9927617
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = HGB ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                        diff       lwr      upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -0.8581818 -4.200166 2.483802 0.7970440
-## Patrick.Lac-Jeff.Lam             -0.5515152 -3.336502 2.233472 0.8732576
-## Patrick.Lac-Marion.van.den.Bosch  0.3066667 -3.149411 3.762744 0.9730151
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = HCT ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                       diff        lwr      upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    0.8854545  -9.534995 11.30590 0.9752227
-## Patrick.Lac-Jeff.Lam             1.3787879  -7.304920 10.06250 0.9163728
-## Patrick.Lac-Marion.van.den.Bosch 0.4933333 -10.282865 11.26953 0.9927376
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = MCV ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                       diff        lwr      upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    1.2727273 -1.4432987 3.988753 0.4787811
-## Patrick.Lac-Jeff.Lam             1.7171717 -0.5461833 3.980527 0.1606829
-## Patrick.Lac-Marion.van.den.Bosch 0.4444444 -2.3643052 3.253194 0.9169171
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = MCH ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                  diff        lwr          upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -0.7 -1.3073080 -0.092692010 0.0219676
-## Patrick.Lac-Jeff.Lam             -0.5 -1.0060900  0.006089992 0.0532226
-## Patrick.Lac-Marion.van.den.Bosch  0.2 -0.4280412  0.828041163 0.7069485
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = MCHC ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                         diff       lwr       upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -2.38363636 -3.553066 -1.214206 0.0001127
-## Patrick.Lac-Jeff.Lam             -2.28585859 -3.260384 -1.311334 0.0000181
-## Patrick.Lac-Marion.van.den.Bosch  0.09777778 -1.111576  1.307131 0.9775388
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = PLT ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                        diff        lwr       upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -213.67273 -464.95714  37.61168 0.1055221
-## Patrick.Lac-Jeff.Lam               63.83838 -145.56529 273.24206 0.7274026
-## Patrick.Lac-Marion.van.den.Bosch  277.51111   17.64799 537.37424 0.0349046
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = RDW ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                          diff        lwr      upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -0.009090909 -1.3965274 1.378346 0.9998506
-## Patrick.Lac-Jeff.Lam              1.690909091  0.5347120 2.847106 0.0036592
-## Patrick.Lac-Marion.van.den.Bosch  1.700000000  0.2651972 3.134803 0.0183529
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = PLT ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                        diff        lwr       upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -213.67273 -464.95714  37.61168 0.1055221
-## Patrick.Lac-Jeff.Lam               63.83838 -145.56529 273.24206 0.7274026
-## Patrick.Lac-Marion.van.den.Bosch  277.51111   17.64799 537.37424 0.0349046
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = Number.Lym ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                       diff        lwr      upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    0.6290909 -1.6086987 2.866881 0.7624067
-## Patrick.Lac-Jeff.Lam             2.0868687  0.2220440 3.951693 0.0264377
-## Patrick.Lac-Marion.van.den.Bosch 1.4577778 -0.8564088 3.771964 0.2740424
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = Number.Mon ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                          diff        lwr       upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -0.052727273 -0.3750921 0.2696376 0.9115117
-## Patrick.Lac-Jeff.Lam              0.005050505 -0.2635869 0.2736879 0.9987711
-## Patrick.Lac-Marion.van.den.Bosch  0.057777778 -0.2755925 0.3911480 0.9012544
-```
-
-```
-##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
-## 
-## Fit: aov(formula = Number.Gra ~ Transplant.performed.by., data = all.control)
-## 
-## $Transplant.performed.by.
-##                                          diff       lwr        upr     p adj
-## Marion.van.den.Bosch-Jeff.Lam    -1.698181818 -3.294545 -0.1018183 0.0356875
-## Patrick.Lac-Jeff.Lam             -1.695959596 -3.026263 -0.3656566 0.0109992
-## Patrick.Lac-Marion.van.den.Bosch  0.002222222 -1.648640  1.6530848 0.9999937
-```
 
