@@ -99,9 +99,6 @@ Let's make dotplots for our CBC counts:
 
 
 
-![](wk11_CBC_files/figure-html/PLT-1.png)<!-- -->
-
-
 
 ![](wk11_CBC_files/figure-html/MCV-1.png)<!-- -->
 
@@ -113,14 +110,11 @@ Let's make dotplots for our CBC counts:
 
 ![](wk11_CBC_files/figure-html/MCHC-1.png)<!-- -->
 
-
-
-![](wk11_CBC_files/figure-html/RDW-1.png)<!-- -->
-
-
+![](wk11_CBC_files/figure-html/PLT-1.png)<!-- -->
 
 ![](wk11_CBC_files/figure-html/MPV-1.png)<!-- -->
 
+![](wk11_CBC_files/figure-html/RDW-1.png)<!-- -->
 
 
 ![](wk11_CBC_files/figure-html/Percent.Lym-1.png)<!-- -->
@@ -254,20 +248,20 @@ First, let's take a look at our statistics
 
 ```
 ## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~   0.344    -0.195     0.882 0.273 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~   0.0604   -0.341     0.462 0.927 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~  -0.283    -0.843     0.276 0.435 ns
+```
+
+```
+## # A tibble: 3 x 8
 ##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
 ## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
 ## 1 Transp~ Jeff.Lam   Marion.va~  -0.0213  -1.72        1.67 0.999   ns          
 ## 2 Transp~ Jeff.Lam   Patrick.L~   1.76     0.497       3.02 0.00485 **          
 ## 3 Transp~ Marion.va~ Patrick.L~   1.78     0.0207      3.54 0.0469  *
-```
-
-```
-## # A tibble: 3 x 8
-##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
-## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
-## 1 Transpl~ Jeff.Lam   Marion.va~   -259.    -517.      0.110 0.0501 ns          
-## 2 Transpl~ Jeff.Lam   Patrick.L~    -34.8   -228.    158.    0.897  ns          
-## 3 Transpl~ Marion.va~ Patrick.L~    224.     -45.0   493.    0.117  ns
 ```
 
 ```
@@ -382,20 +376,20 @@ First, let's take a look at our statistics
 
 ```
 ## # A tibble: 3 x 8
+##   term     group1      group2     estimate conf.low conf.high p.adj p.adj.signif
+## * <chr>    <chr>       <chr>         <dbl>    <dbl>     <dbl> <dbl> <chr>       
+## 1 Transpl~ Jeff.Lam    Marion.va~   0.329    -0.246     0.904 0.339 ns          
+## 2 Transpl~ Jeff.Lam    Patrick.L~   0.0535   -0.425     0.533 0.958 ns          
+## 3 Transpl~ Marion.van~ Patrick.L~  -0.276    -0.870     0.319 0.486 ns
+```
+
+```
+## # A tibble: 3 x 8
 ##   term    group1     group2     estimate conf.low conf.high   p.adj p.adj.signif
 ## * <chr>   <chr>      <chr>         <dbl>    <dbl>     <dbl>   <dbl> <chr>       
 ## 1 Transp~ Jeff.Lam   Marion.va~ -0.00909   -1.40       1.38 1       ns          
 ## 2 Transp~ Jeff.Lam   Patrick.L~  1.69       0.535      2.85 0.00366 **          
 ## 3 Transp~ Marion.va~ Patrick.L~  1.70       0.265      3.13 0.0184  *
-```
-
-```
-## # A tibble: 3 x 8
-##   term     group1     group2     estimate conf.low conf.high  p.adj p.adj.signif
-## * <chr>    <chr>      <chr>         <dbl>    <dbl>     <dbl>  <dbl> <chr>       
-## 1 Transpl~ Jeff.Lam   Marion.va~   -214.    -465.       37.6 0.106  ns          
-## 2 Transpl~ Jeff.Lam   Patrick.L~     63.8   -146.      273.  0.727  ns          
-## 3 Transpl~ Marion.va~ Patrick.L~    278.      17.6     537.  0.0349 *
 ```
 
 ```

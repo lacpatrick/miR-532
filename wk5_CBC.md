@@ -76,11 +76,6 @@ Let's make dotplots for our CBC counts:
 ![](wk5_CBC_files/figure-html/HCT-1.png)<!-- -->
 
 
-
-![](wk5_CBC_files/figure-html/PLT-1.png)<!-- -->
-
-
-
 ![](wk5_CBC_files/figure-html/MCV-1.png)<!-- -->
 
 
@@ -91,14 +86,11 @@ Let's make dotplots for our CBC counts:
 
 ![](wk5_CBC_files/figure-html/MCHC-1.png)<!-- -->
 
-
-
-![](wk5_CBC_files/figure-html/RDW-1.png)<!-- -->
-
-
+![](wk5_CBC_files/figure-html/PLT-1.png)<!-- -->
 
 ![](wk5_CBC_files/figure-html/MPV-1.png)<!-- -->
 
+![](wk5_CBC_files/figure-html/RDW-1.png)<!-- -->
 
 
 ![](wk5_CBC_files/figure-html/Percent.Lym-1.png)<!-- -->

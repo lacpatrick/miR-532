@@ -17,26 +17,31 @@ library(ggplot2)
 library(ggpubr)
 library(cowplot)
 library(gridExtra)
+library(rstatix)
 ```
 
 Let's begin by importing our data:
 
 ``` {r import.data}
-Test_metadata <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/Test_MetaData.csv")
+Metadata <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/BMT_MetaData.csv")
 JL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/JL_532_BMT_Data.csv")
-Test_MB_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/Test_MB_532_BMT_Data.csv")
+MB_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/MB_532_BMT_Data.csv")
 PL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/PL_532_BMT_Data.csv")
+Test_Metadata <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/Test_MetaData.csv")
+Test_MB_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/Test_MB_532_BMT_Data.csv")
+Metadata2 <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/BMT_MetaData2.csv")
 ```
 
 Next lets attach the different peripheral blood data together:
 ``` {r combine.data}
-Total_PB_data <- rbind(JL_data, Test_MB_data, PL_data)
-head(Total_PB_data)
+Total_PB_data <- rbind(JL_data, MB_data, PL_data)
+Total_Test_data <- rbind(JL_data, Test_MB_data, PL_data)
 ```
 
 We will make a copy of the total data for manipulation:
 ``` {r data.copy}
 Data.copy <- Total_PB_data
+Test.copy <- Total_Test_data
 ```
 
 # Peripheral bleeds 11 weeks post-transplant:
@@ -45,23 +50,29 @@ Next we will filter for CBC data at 11 weeks post-transplant
 week10data <- subset(Data.copy, Weeks.post.transplant == 10)
 week11data <- subset(Data.copy, Weeks.post.transplant == 11)
 Data.sub <- rbind(week10data, week11data)
-head(Data.sub)
+
+Test.week10data <- subset(Test.copy, Weeks.post.transplant == 10)
+Test.week11data <- subset(Test.copy, Weeks.post.transplant == 11)
+Test.Data.sub <- rbind(Test.week10data, Test.week11data)
 ```
 
 ## Now lets separate the data based on the transplanter:
 
 We begin by joining the metadata to the week 11 CBC data
 ``` {r data+metadata}
-alldata.sub <- left_join(Test_metadata, Data.sub)
-
+alldata.sub <- left_join(Metadata, Data.sub)
 all.control <- subset(alldata.sub, Treatment == "control")
-all.miR532 <-subset(alldata.sub, Treatment == "miR-532")
+
+alldata.sub2 <- left_join(Metadata2, Data.sub)
+all.control2 <- subset(alldata.sub2, Treatment == "control")
+
+Test.alldata.sub <- left_join(Test_Metadata, Test.Data.sub)
+Test.all.control <- subset(Test.alldata.sub, Treatment == "control")
+
 ```
 
 Now let's make dot plots for the CBC data by transplanter
-``` {r transplanter.WBC, fig.width=4, fig.height=4}
-
-
+``` {r transplanter.WBC, fig.width=6, fig.height=4}
 transplanter.WBC.control <- ggplot(all.control, aes(x=Transplant.performed.by., y=WBC, fill=Transplant.performed.by.)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
@@ -70,9 +81,53 @@ transplanter.WBC.control <- ggplot(all.control, aes(x=Transplant.performed.by., 
   labs(title = "White blood cells - Control", x = "Transplanter", y = "WBC (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
   scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
-  stat_compare_means(comparisons = list(c("JL","PL"), c("MB","PL")), aes(label=..p..)) +
-  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
-  theme(legend.position="none")
+  stat_compare_means(comparisons = list(c("Jeff.Lam","Patrick.Lac")), aes(label=..p..), label.y = 11.5) +
+  stat_compare_means(comparisons = list(c("Jeff.Lam","Marion.van.den.Bosch")), aes(label=..p..), label.y = 10.5) +
+  stat_compare_means(comparisons = list(c("Patrick.Lac","Marion.van.den.Bosch")), aes(label=..p..), label.y = 10.5) +
+  theme(legend.position="bottom", legend.title=element_text(size=15), legend.text = element_text(size=10))
+
+
+transplanter.WBC.control
+```
+
+Now let's make dot plots for the CBC data by transplanter
+``` {r transplanter.WBC, fig.width=6, fig.height=6}
+Anova.WBC <- aov(WBC ~ Transplanter, data = Test.all.control) %>%
+  tukey_hsd()
+Anova.WBC
+
+fig2 <- ggplot(Test.all.control, aes(x=Transplanter, y=WBC)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  ylim(0, 12) +
+  labs(title = "White blood cells - Control", x = "Transplanter", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="bottom", legend.title=element_text(size=15), legend.text = element_text(size=10)) +
+  stat_pvalue_manual(Anova.WBC, y.position = c(10,11,12), label="p.adj")
+fig2
+```
+
+``` {r wilcox}
+pairwise.wilcox.test(all.control2$WBC, all.control2$Transplant.performed.by.,
+                 p.adjust.method = "BH")
+```
+
+Now let's make dot plots for the CBC data by transplanter
+``` {r transplanter.WBC, fig.width=6, fig.height=4}
+
+
+transplanter.WBC.control <- ggplot(Test.all.control, aes(x=Transplant.performed.by., y=WBC, fill=Transplant.performed.by.)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  ylim(0, 12) +
+  labs(title = "White blood cells - Control", x = "Transplanter", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  stat_compare_means(comparisons = list(c("JL","PL")), aes(label=..p..)) +
+  theme(legend.position="bottom", legend.title=element_text(size=15), legend.text = element_text(size=10))
 
 
 transplanter.WBC.control
