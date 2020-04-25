@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 
 ```{r libraries}
 library(tidyverse)
+library(dplyr)
 library(RankAggreg)
 library(RobustRankAggreg)
 ```
@@ -20,4 +21,40 @@ library(RobustRankAggreg)
 ```{r data}
 AMLPMP_corrgenes <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/miR-532 targets/Data/Gene_corr_miR-532_AMLPMP.csv")
 TCGA_corrgenes <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/miR-532 targets/Data/Gene_corr_miR-532_TCGA.csv")
+```
+
+Now let's prepare our list of genes for input into RankAggreg 
+
+In rankAggreg, the algorithm looks at how each item is positioned in the ranked lists and compares this to the baseline case where the  lists are randomly shuffled. 
+
+A P-value is calculated, showing how it is positioned in the aggregated list compared to chance. This P-value is used both for re-ranking the items and deciding their significance. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278763/)
+
+```{r lists}
+AMLPMP_ordered <- AMLPMP_corrgenes[order(AMLPMP_corrgenes$neg_corr_rank),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+
+TCGA_ordered<- TCGA_corrgenes[order(TCGA_corrgenes$neg_corr_rank),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+```
+
+From the entire list of significantly correlated genes, 146 and 139 genes are negatively correlated with miR-532 expression in the AML-PMP and TCGA datasets respectively.
+
+```{r lists}
+AMLPMP_anticorr <- AMLPMP_ordered[1:146,1]
+TCGA_anticorr <- TCGA_ordered[1:139,1]
+
+glist <- list(AMLPMP_anticorr, TCGA_anticorr)
+finalrank <- aggregateRanks(glist = glist)
+finalrank
+
+rank.stuart <- aggregateRanks(glist = glist, method= "stuart")
+rank.stuart
+```
+
+Now let's convert the results into csv files:
+``` {r csv}
+write.csv(finalrank, file = "Aggregated_miR-532_targets(RRA).csv")
+write.csv(rank.stuart, file = "Aggregated_miR-532_targets(Stuart).csv")
 ```
