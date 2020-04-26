@@ -1,0 +1,136 @@
+---
+title: "miRNA_survival"
+author: "Patrick Lac"
+date: "April 25, 2020"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+```
+
+```{r library}
+library(tidyverse)
+library(dplyr)
+library(RobustRankAggreg)
+library(RankAggreg)
+```
+
+Let's load in our data:
+
+``` {r data}
+miRNA_AMLPMP <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table3_significant_miRNAs_by_Cox_in_PMP.csv")
+miRNA_TCGA <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table1_significant_miRNAs_by_Cox_in_TCGA.csv")
+```
+
+``` {r order_miRNAs}
+AMLPMP_ordered_miRS <- miRNA_AMLPMP[order(miRNA_AMLPMP$p_value_wald_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+
+TCGA_ordered_miRs <- miRNA_TCGA[order(miRNA_TCGA$p_value_wald_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+```
+
+Now let's filter for shared miRNAs only:
+``` {r filter_shared_miRNAs}
+AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP, miRNA_AMLPMP$ï..miRNA %in% miRNA_TCGA$ï..miRNA)
+TCGA_shared_miRNA <- filter(miRNA_TCGA, miRNA_TCGA$ï..miRNA %in% miRNA_AMLPMP$ï..miRNA)
+```
+
+Next, we will order the shared miRNAs by significance
+``` {r order_miRNAs}
+AMLPMP_ordered_shared_miRs <- AMLPMP_shared_miRNA[order(AMLPMP_shared_miRNA$p_value_wald_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+
+TCGA_ordered_shared_miRs <- TCGA_shared_miRNA[order(TCGA_shared_miRNA$p_value_wald_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+```
+
+Now, we will aggregate the ordered miRNAs 
+``` {r aggregate_miRNAs}
+glist <- c(AMLPMP_ordered_miRS, TCGA_ordered_miRs)
+
+miRNA_agg <- aggregateRanks(glist = glist, method = "RRA", exact = T)
+miRNA_agg
+```
+The p-values are all at 1 - why? because this method relies on comparing relative positions between miRNAs within the data (eg. whether a>b in both datasets). The positions of the miRNAs are highly inconsistent relative to one another between these datasets so the package is unable to come up with a p-value
+
+## Trying RankAggreg package
+This package simulates 
+
+``` {r RankAggreg matrices}
+miR532ranks.total <- matrix(c(AMLPMP_ordered_miRS[1:170],
+              TCGA_ordered_miRs[1:170]), byrow=TRUE, ncol=170)
+
+miR532ranks.shared <- matrix(c(AMLPMP_ordered_shared_miRs,
+              TCGA_ordered_shared_miRs), byrow=TRUE, ncol=52)
+```
+
+First let's aggregate using Spearman's. This looks at the "distance" of miRNAs and does not consider how miRNAs relate to one another
+``` {r Aggregate.all.miRs.Spearman}
+(CES <- RankAggreg(miR532ranks.total, 25, weights=NULL, method="CE", distance="Spearman", rho=.1, convIn=30))
+plot(CES)
+```
+
+``` {r Aggregate.all.miRs.Kendall}
+(CES <- RankAggreg(miR532ranks.total, 25, weights=NULL, method="CE", distance="Kendall", rho=.1, convIn=7))
+plot(CES)
+```
+
+``` {r Aggregate.shared.miRs.Spearman}
+(CES <- RankAggreg(miR532ranks.shared, 25, weights=NULL, method="CE", distance="Spearman", rho=.1, convIn=30))
+plot(CES)
+```
+
+``` {r Aggregate.all.miRs.Kendall}
+(CES <- RankAggreg(miR532ranks.shared, 25, weights=NULL, method="CE", distance="Kendall", rho=.1, convIn=7))
+plot(CES)
+```
+
+### Now let's look at the Xp11.23 miRNAs only
+``` {r Xp11.23.data}
+xp11.23_AMLPMP <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table4_significant_Xp11.23_miRNAs_by_Cox_in_PMP.csv")
+xp11.23_TCGA <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table2_significant_Xp11.23_miRNAs_by_Cox_in_TCGA.csv")
+```
+
+Now let's filter for shared miRNAs only:
+``` {r filter_shared_xp11.23}
+AMLPMP_shared_xp11.23 <- filter(xp11.23_AMLPMP, xp11.23_AMLPMP$ï..miRNA %in% xp11.23_TCGA$ï..miRNA)
+TCGA_shared_xp11.23 <- filter(xp11.23_TCGA, xp11.23_TCGA$ï..miRNA %in% xp11.23_AMLPMP$ï..miRNA)
+```
+
+Next, we will order the shared miRNAs by significance
+``` {r order_xp11.23}
+AMLPMP_shared_xp11.23_ordered <- AMLPMP_shared_xp11.23[order(AMLPMP_shared_xp11.23$p_value_ward_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+
+TCGA_shared_xp11.23_ordered <- TCGA_shared_xp11.23[order(TCGA_shared_xp11.23$p_value_wald_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+```
+
+Now, we will aggregate the ordered xp11.23 miRNAs using RobustRankAggreg
+``` {r aggregate_xp11.23}
+glist.xp11.23 <- c(AMLPMP_shared_xp11.23_ordered, TCGA_shared_xp11.23_ordered)
+
+xp11.23_agg <- aggregateRanks(glist = glist.xp11.23, method = "RRA")
+xp11.23_agg
+```
+
+It has the same issue as with the entire list.  The relative positions of the miRNAs are not consistent between the two datasets.
+
+In that case, let's aggregate using RanKAggreg's Spearman method
+``` {r Aggregate.shared.miRs.Spearman}
+xp11.23.shared.matrix <- matrix(c(AMLPMP_shared_xp11.23_ordered,
+              TCGA_shared_xp11.23_ordered), byrow=TRUE, ncol=13)
+
+(CES.xp11.23 <- RankAggreg(xp11.23.shared.matrix, 13, weights=NULL, method="CE", distance="Spearman", rho=.1, convIn=30))
+plot(CES.xp11.23)
+```

@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 ```{r libraries}
 library(tidyverse)
 library(dplyr)
-library(RankAggreg)
 library(RobustRankAggreg)
 ```
 
@@ -41,7 +40,7 @@ TCGA_ordered<- TCGA_corrgenes[order(TCGA_corrgenes$neg_corr_rank),] %>%
 
 From the entire list of significantly correlated genes, 146 and 139 genes are negatively correlated with miR-532 expression in the AML-PMP and TCGA datasets respectively.
 
-```{r lists}
+```{r aggregate}
 AMLPMP_anticorr <- AMLPMP_ordered[1:146,1]
 TCGA_anticorr <- TCGA_ordered[1:139,1]
 
@@ -59,3 +58,9 @@ write.csv(finalrank, file = "Aggregated_miR-532_targets(RRA).csv")
 write.csv(rank.stuart, file = "Aggregated_miR-532_targets(Stuart).csv")
 ```
 
+```{r RankAggreg}
+RankAggreg_matrix <- matrix(c(AMLPMP_ordered[1:100],
+              TCGA_ordered[1:100]), byrow=TRUE, ncol=100)
+
+(CESnoweights <- RankAggreg(RankAggreg_matrix, 25, method="CE", distance="Spearman", N=100, convIn=5, rho=.1))
+```
