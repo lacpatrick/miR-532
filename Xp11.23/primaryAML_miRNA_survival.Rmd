@@ -1,7 +1,7 @@
 ---
-title: "miRNA_survival"
+title: "miRNA_primaryAML_survival"
 author: "Patrick Lac"
-date: "April 25, 2020"
+date: "May 2, 2020"
 output: 
   html_document: 
     keep_md: yes
@@ -37,8 +37,8 @@ TCGA_ordered_miRs <- miRNA_TCGA[order(miRNA_TCGA$p_value_wald_test),] %>%
 
 Now let's filter for shared miRNAs only:
 ``` {r filter_shared_miRNAs}
-AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP, miRNA_AMLPMP$ï..miRNA %in% miRNA_TCGA$ï..miRNA)
-TCGA_shared_miRNA <- filter(miRNA_TCGA, miRNA_TCGA$ï..miRNA %in% miRNA_AMLPMP$ï..miRNA)
+AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP, miRNA_AMLPMP$?..miRNA %in% miRNA_TCGA$?..miRNA)
+TCGA_shared_miRNA <- filter(miRNA_TCGA, miRNA_TCGA$?..miRNA %in% miRNA_AMLPMP$?..miRNA)
 ```
 
 Next, we will order the shared miRNAs by significance
@@ -101,8 +101,8 @@ xp11.23_TCGA <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/D
 
 Now let's filter for shared miRNAs only:
 ``` {r filter_shared_xp11.23}
-AMLPMP_shared_xp11.23 <- filter(xp11.23_AMLPMP, xp11.23_AMLPMP$ï..miRNA %in% xp11.23_TCGA$ï..miRNA)
-TCGA_shared_xp11.23 <- filter(xp11.23_TCGA, xp11.23_TCGA$ï..miRNA %in% xp11.23_AMLPMP$ï..miRNA)
+AMLPMP_shared_xp11.23 <- filter(xp11.23_AMLPMP, xp11.23_AMLPMP$?..miRNA %in% xp11.23_TCGA$?..miRNA)
+TCGA_shared_xp11.23 <- filter(xp11.23_TCGA, xp11.23_TCGA$?..miRNA %in% xp11.23_AMLPMP$?..miRNA)
 ```
 
 Next, we will order the shared miRNAs by significance

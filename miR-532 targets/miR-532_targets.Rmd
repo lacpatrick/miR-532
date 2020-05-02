@@ -28,22 +28,42 @@ In rankAggreg, the algorithm looks at how each item is positioned in the ranked 
 
 A P-value is calculated, showing how it is positioned in the aggregated list compared to chance. This P-value is used both for re-ranking the items and deciding their significance. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278763/)
 
-```{r lists}
-AMLPMP_ordered <- AMLPMP_corrgenes[order(AMLPMP_corrgenes$neg_corr_rank),] %>%
-  pull(var=1) %>%
-  as.matrix(nrow=1)
 
-TCGA_ordered<- TCGA_corrgenes[order(TCGA_corrgenes$neg_corr_rank),] %>%
-  pull(var=1) %>%
-  as.matrix(nrow=1)
+```{r downreg_genes}
+AMLPMP_downreg <- filter(AMLPMP_corrgenes, AMLPMP_corrgenes$estimate < 0)
+TCGA_downreg <- filter(TCGA_corrgenes, TCGA_corrgenes$estimate < 0)
 ```
 
-From the entire list of significantly correlated genes, 146 and 139 genes are negatively correlated with miR-532 expression in the AML-PMP and TCGA datasets respectively.
+``` {r common_genes}
+AMLPMP_shared <- filter(AMLPMP_downreg, AMLPMP_downreg$ï..gene %in% TCGA_downreg$ï..gene)
+TCGA_shared <- filter(TCGA_downreg, TCGA_downreg$ï..gene %in% AMLPMP_downreg$ï..gene)
+```
 
-```{r aggregate}
-AMLPMP_anticorr <- AMLPMP_ordered[1:146,1]
-TCGA_anticorr <- TCGA_ordered[1:139,1]
+From the entire list of significantly correlated genes, 146 and 139 genes are negatively correlated with miR-532 expression in the AML-PMP and TCGA datasets respectively. 116 are common between the datasets.
 
+```{r lists}
+AMLPMP_ordered <- AMLPMP_shared[order(AMLPMP_shared$neg_corr_rank),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+
+TCGA_ordered<- TCGA_shared[order(TCGA_shared$neg_corr_rank),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+
+AMLPMP_anticorr <- AMLPMP_ordered[1:116,1]
+TCGA_anticorr <- TCGA_ordered[1:116,1]
+```
+
+``` {r aggregateranks}
+glist <- list(AMLPMP_anticorr, TCGA_anticorr)
+finalrank <- aggregateRanks(glist = glist)
+finalrank
+
+rank.stuart <- aggregateRanks(glist = glist, method= "RRA")
+rank.stuart
+```
+
+``` {r aggregateranks}
 glist <- list(AMLPMP_anticorr, TCGA_anticorr)
 finalrank <- aggregateRanks(glist = glist)
 finalrank
