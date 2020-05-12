@@ -25,6 +25,11 @@ miRNA_AMLPMP <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/D
 miRNA_TCGA <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table1_significant_miRNAs_by_Cox_in_TCGA.csv")
 ```
 
+```{r rename column}
+colnames(miRNA_AMLPMP)[1] <- "miRNA"
+colnames(miRNA_TCGA)[1] <- "miRNA"
+```
+
 ``` {r order_miRNAs}
 AMLPMP_ordered_miRS <- miRNA_AMLPMP[order(miRNA_AMLPMP$p_value_wald_test),] %>%
   pull(var=1) %>%
@@ -37,8 +42,8 @@ TCGA_ordered_miRs <- miRNA_TCGA[order(miRNA_TCGA$p_value_wald_test),] %>%
 
 Now let's filter for shared miRNAs only:
 ``` {r filter_shared_miRNAs}
-AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP, miRNA_AMLPMP$?..miRNA %in% miRNA_TCGA$?..miRNA)
-TCGA_shared_miRNA <- filter(miRNA_TCGA, miRNA_TCGA$?..miRNA %in% miRNA_AMLPMP$?..miRNA)
+AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP, miRNA_AMLPMP$miRNA %in% miRNA_TCGA$miRNA)
+TCGA_shared_miRNA <- filter(miRNA_TCGA, miRNA_TCGA$miRNA %in% miRNA_AMLPMP$miRNA)
 ```
 
 Next, we will order the shared miRNAs by significance
@@ -54,7 +59,7 @@ TCGA_ordered_shared_miRs <- TCGA_shared_miRNA[order(TCGA_shared_miRNA$p_value_wa
 
 Now, we will aggregate the ordered miRNAs 
 ``` {r aggregate_miRNAs}
-glist <- c(AMLPMP_ordered_miRS, TCGA_ordered_miRs)
+glist <- c(AMLPMP_ordered_shared_miRs, TCGA_ordered_shared_miRs)
 
 miRNA_agg <- aggregateRanks(glist = glist, method = "RRA", exact = T)
 miRNA_agg
@@ -68,10 +73,15 @@ xp11.23_AMLPMP <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23
 xp11.23_TCGA <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table2_significant_Xp11.23_miRNAs_by_Cox_in_TCGA.csv")
 ```
 
+```{r rename column}
+colnames(xp11.23_AMLPMP)[1] <- "miRNA"
+colnames(xp11.23_TCGA)[1] <- "miRNA"
+```
+
 Now let's filter for shared miRNAs only:
 ``` {r filter_shared_xp11.23}
-AMLPMP_shared_xp11.23 <- filter(xp11.23_AMLPMP, xp11.23_AMLPMP$?..miRNA %in% xp11.23_TCGA$?..miRNA)
-TCGA_shared_xp11.23 <- filter(xp11.23_TCGA, xp11.23_TCGA$?..miRNA %in% xp11.23_AMLPMP$?..miRNA)
+AMLPMP_shared_xp11.23 <- filter(xp11.23_AMLPMP, xp11.23_AMLPMP$miRNA %in% xp11.23_TCGA$miRNA)
+TCGA_shared_xp11.23 <- filter(xp11.23_TCGA, xp11.23_TCGA$miRNA %in% xp11.23_AMLPMP$miRNA)
 ```
 
 Next, we will order the shared miRNAs by significance
@@ -92,17 +102,16 @@ glist.xp11.23 <- c(AMLPMP_shared_xp11.23_ordered, TCGA_shared_xp11.23_ordered)
 xp11.23_agg <- aggregateRanks(glist = glist.xp11.23, method = "RRA")
 xp11.23_agg
 ```
-Now, we will aggregate the ordered xp11.23 miRNAs using RobustRankAggreg's stuart method
-``` {r aggregate_xp11.23}
-glist.xp11.23 <- c(AMLPMP_shared_xp11.23_ordered, TCGA_shared_xp11.23_ordered)
 
-xp11.23_agg_stuart <- aggregateRanks(glist = glist.xp11.23, method = "stuart")
-xp11.23_agg_stuart
+Now let's get the chromosome locations and cluster information for the miRs in the shared list
+```{r shared_miRs_location}
+miRNAs <- as.character(miRNA_agg[,1])
+
+x <- mirbaseCLUSTER
+clL <- eapply(x, length)
+id <- names(clL[clL > 1])[1]
+get(miRNAs, x)
 ```
-
-It has the same issue as with the entire list.  The relative positions of the miRNAs are not consistent between the two datasets.
-
-Now let's get the chromosome locations for the miRs
 
 
 
