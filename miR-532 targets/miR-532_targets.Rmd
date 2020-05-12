@@ -15,6 +15,8 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F)
 library(tidyverse)
 library(dplyr)
 library(RobustRankAggreg)
+library(gprofiler2)
+library(plotly)
 ```
 
 ```{r data}
@@ -28,15 +30,20 @@ In rankAggreg, the algorithm looks at how each item is positioned in the ranked 
 
 A P-value is calculated, showing how it is positioned in the aggregated list compared to chance. This P-value is used both for re-ranking the items and deciding their significance. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278763/)
 
+```{r rename column}
+colnames(AMLPMP_corrgenes)[1] <- "genes"
+colnames(TCGA_corrgenes)[1] <- "genes"
+```
 
 ```{r downreg_genes}
 AMLPMP_downreg <- filter(AMLPMP_corrgenes, AMLPMP_corrgenes$estimate < 0)
 TCGA_downreg <- filter(TCGA_corrgenes, TCGA_corrgenes$estimate < 0)
 ```
 
+
 ``` {r common_genes}
-AMLPMP_shared <- filter(AMLPMP_downreg, AMLPMP_downreg$ï..gene %in% TCGA_downreg$ï..gene)
-TCGA_shared <- filter(TCGA_downreg, TCGA_downreg$ï..gene %in% AMLPMP_downreg$ï..gene)
+AMLPMP_shared <- filter(AMLPMP_downreg, AMLPMP_downreg$genes %in% TCGA_downreg$genes)
+TCGA_shared <- filter(TCGA_downreg, TCGA_downreg$genes %in% AMLPMP_downreg$genes)
 ```
 
 From the entire list of significantly correlated genes, 146 and 139 genes are negatively correlated with miR-532 expression in the AML-PMP and TCGA datasets respectively. 116 are common between the datasets.
@@ -59,18 +66,14 @@ glist <- list(AMLPMP_anticorr, TCGA_anticorr)
 finalrank <- aggregateRanks(glist = glist)
 finalrank
 
-rank.stuart <- aggregateRanks(glist = glist, method= "RRA")
-rank.stuart
-```
-
-``` {r aggregateranks}
-glist <- list(AMLPMP_anticorr, TCGA_anticorr)
-finalrank <- aggregateRanks(glist = glist)
-finalrank
+rank.RRA <- aggregateRanks(glist = glist, method= "RRA")
+rank.RRA
 
 rank.stuart <- aggregateRanks(glist = glist, method= "stuart")
 rank.stuart
 ```
+
+
 
 Now let's convert the results into csv files:
 ``` {r csv}
@@ -78,9 +81,22 @@ write.csv(finalrank, file = "Aggregated_miR-532_targets(RRA).csv")
 write.csv(rank.stuart, file = "Aggregated_miR-532_targets(Stuart).csv")
 ```
 
-```{r RankAggreg}
-RankAggreg_matrix <- matrix(c(AMLPMP_ordered[1:100],
-              TCGA_ordered[1:100]), byrow=TRUE, ncol=100)
+### Now let's look at the gene ontology 
+Beginning by making a list from the aggregated gene rankings
+```{r GO_genelist}
+GO_list <- rank.RRA[, 1]
+```
 
-(CESnoweights <- RankAggreg(RankAggreg_matrix, 25, method="CE", distance="Spearman", N=100, convIn=5, rho=.1))
+Now let's look perform the GO analysis
+
+```{r GO_analysis}
+GO_targets <- gost(GO_list, organism ="hsapiens")
+GO_targets
+```
+
+Now we can try to visualize the results
+
+```{r plot_GO}
+GO_plot <- gostplot(GO_targets, interactive = T)
+GO_plot
 ```
