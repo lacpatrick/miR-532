@@ -17,6 +17,7 @@ library(dplyr)
 library(RobustRankAggreg)
 library(gprofiler2)
 library(plotly)
+library(enrichR)
 ```
 
 ```{r data}
@@ -99,4 +100,65 @@ Now we can try to visualize the results
 ```{r plot_GO}
 GO_plot <- gostplot(GO_targets, interactive = T)
 GO_plot
+```
+
+#### Now let's try using Enrichr
+
+``` {r enrichr_532}
+listEnrichrDbs()
+enrichr_db <- listEnrichrDbs()
+enrichr_db <- c("GO_Molecular_Function_2018", "GO_Cellular_Component_2018", "GO_Biological_Process_2018", "KEGG_2019_Human", "ChEA_2016", "ENCODE_TF_ChIP-seq_2015", "Transcription_Factor_PPIs", "ENCODE_Histone_Modifications_2015" ,"WikiPathways_2019_Human", "Reactome_2016", "PPI_Hub_Proteins", "Cancer_Cell_Line_Encyclopedia", "Human_Gene_Atlas", "ProteomicsDB_2020", "Mouse_Gene_Atlas", "CCLE_Proteomics_2020")
+
+miR532_targets_enrichr <- enrichr(as.character(GO_list), enrichr_db)
+printEnrich(miR532_targets_enrichr, "miR532_target_enrichr.txt" , sep = "\t", columns = c(1:9))
+```
+
+```{r enrichr_results}
+MF_miR532 <- miR532_targets_enrichr[["GO_Molecular_Function_2018"]]
+MF_miR532
+
+CC_miR532 <- miR532_targets_enrichr[["GO_Cellular_Component_2018"]]
+CC_miR532
+
+BP_miR532 <- miR532_targets_enrichr[["GO_Biological_Process_2018"]]
+BP_miR532
+
+KEGG_miR532 <- miR532_targets_enrichr[["KEGG_2019_Human"]]
+KEGG_miR532
+
+ChEA_miR532 <- miR532_targets_enrichr[["ChEA_2016"]]
+ChEA_miR532
+
+EncodeTFCHIP_miR532 <- miR532_targets_enrichr[["ENCODE_TF_ChIP-seq_2015"]]
+EncodeTFCHIP_miR532
+
+TF_PPI_miR532 <- miR532_targets_enrichr[["Transcription_Factor_PPIs"]]
+TF_PPI_miR532
+
+histonemodification_miR532 <- miR532_targets_enrichr[["ENCODE_Histone_Modifications_2015"]]
+histonemodification_miR532
+
+wikipathways_miR532 <- miR532_targets_enrichr[["WikiPathways_2019_Human"]]
+wikipathways_miR532
+
+Reactome_miR532 <- miR532_targets_enrichr[["Reactome_2016"]]
+Reactome_miR532
+
+Protein_PPI_miR532 <- miR532_targets_enrichr[["PPI_Hub_Proteins"]]
+Protein_PPI_miR532
+
+HumanGeneAtlas_miR532 <- miR532_targets_enrichr[["Human_Gene_Atlas"]]
+HumanGeneAtlas_miR532
+
+MouseGeneAtlas_miR532 <- miR532_targets_enrichr[["Mouse_Gene_Atlas"]]
+MouseGeneAtlas_miR532
+
+Proteomics_miR532 <- miR532_targets_enrichr[["ProteomicsDB_2020"]]
+Proteomics_miR532
+
+CCLE_miR532 <- miR532_targets_enrichr[["Cancer_Cell_Line_Encyclopedia"]]
+CCLE_miR532
+
+CCLE_Proteomics_miR532 <- miR532_targets_enrichr[["CCLE_Proteomics_2020"]]
+CCLE_Proteomics_miR532
 ```
