@@ -112,6 +112,19 @@ clL <- eapply(x, length)
 id <- names(clL[clL > 1])[1]
 get(miRNAs, x)
 ```
+```{r shared_miRs_location}
+miRNAs <- as.character(xp11.23_agg[,1])
 
+x <- mirbaseCLUSTER
+clL <- eapply(x, length)
+id <- names(clL[clL > 1])[1]
+get(miRNAs, x)
+```
+``` {r chromosome}
+x <- mirbaseCLUSTER
+# Get the first cluster containg more than one element
+clL <- eapply(x, length)
+id <- names(clL[clL > 1])
+get(id, x)
 
-
+```
