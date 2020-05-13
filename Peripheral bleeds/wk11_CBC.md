@@ -45,7 +45,7 @@ We will make a copy of the total data for manipulation:
 What are the dimensions of our data?
 
 ```
-## [1] 368  21
+## [1] 389  21
 ```
 
 # Peripheral bleeds 11 weeks post-transplant:
@@ -53,12 +53,12 @@ Next we will filter for CBC data at 11 weeks post-transplant
 
 ```
 ##     ï..Sample          Original.label Treatment Weeks.post.transplant  WBC
-## 28      MIG.1 BMT1.MIG (NEP cage 1/2)   control                    10  5.0
-## 29      MIG.2 BMT1.MIG (REP cage 1/2)   control                    10 11.1
-## 30      MIG.3 BMT1.MIG (BEP cage 2/2)   control                    10  3.4
-## 31      MIG.4 BMT1.MIG (REP cage 2/2)   control                    10  3.8
-## 234    MIG.12        MB_miR BMT_MIG_1   control                    10  4.3
-## 235    MIG.13        MB_miR BMT_MIG_2   control                    10  6.5
+## 28      MIG.1 BMT1.MIG (NEP cage 1/2)   control                    11  5.0
+## 29      MIG.2 BMT1.MIG (REP cage 1/2)   control                    11 11.1
+## 30      MIG.3 BMT1.MIG (BEP cage 2/2)   control                    11  3.4
+## 31      MIG.4 BMT1.MIG (REP cage 2/2)   control                    11  3.8
+## 234    MIG.12        MB_miR BMT_MIG_1   control                    11  4.3
+## 235    MIG.13        MB_miR BMT_MIG_2   control                    11  6.5
 ##       RBC  HGB  HCT MCV  MCH MCHC PLT MPV  RDW Percent.Lym Percent.Mon
 ## 28  10.84 16.4 50.4  46 15.1 32.5 614 6.4 15.3          NA          NA
 ## 29  10.81 15.5 47.7  44 14.4 32.6 567 6.7 15.9          NA          NA

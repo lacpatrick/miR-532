@@ -50,6 +50,7 @@ Next we will filter for CBC data at 11 weeks post-transplant
 week10data <- subset(Data.copy, Weeks.post.transplant == 10)
 week11data <- subset(Data.copy, Weeks.post.transplant == 11)
 Data.sub <- rbind(week10data, week11data)
+Data.sub$Weeks.post.transplant <- 11
 head(Data.sub)
 ```
 
@@ -317,7 +318,7 @@ GFP <- ggplot(Data.sub, aes(x=Treatment, y=GFP, fill=Treatment)) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
   ylim(0, 105) +
-  labs(title = "Engraftment", x = "Treatment", y = "GFP+ (%)") +
+  labs(title = "PB Engraftment", x = "Treatment", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
   scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
   stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
@@ -833,7 +834,7 @@ transplanter.GFP.control <- ggplot(all.control, aes(x=Transplanter, y=GFP)) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
   ylim(0, 105) +
-  labs(title = "Engraftment - Control", x = "Transplanter", y = "GFP+ (%)") +
+  labs(title = "PB Engraftment - Control", x = "Transplanter", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
   scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
@@ -845,7 +846,7 @@ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="erro
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
   ylim(0, 105) +
-  labs(title = "Engraftment - miR-532", x = "Transplanter", y = "GFP+ (%)") +
+  labs(title = "PB Engraftment - miR-532", x = "Transplanter", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
   scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
   theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +

@@ -154,7 +154,6 @@ MCH
 ```
 
 
-
 ```{r MCHC, fig.width=3,fig.height=3.2}
 MCHC <- ggplot(Data.sub, aes(x=Treatment, y=MCHC, fill=Treatment)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
@@ -312,7 +311,7 @@ GFP <- ggplot(Data.sub, aes(x=Treatment, y=GFP, fill=Treatment)) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
   ylim(0, 105) +
-  labs(title = "Engraftment", x = "Treatment", y = "GFP+ (%)") +
+  labs(title = "PB Engraftment", x = "Treatment", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
   scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
   stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
@@ -710,7 +709,7 @@ transplanter.GFP.control <- ggplot(all.control, aes(x=Transplanter, y=GFP, fill=
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
   ylim(0, 105) +
-  labs(title = "Engraftment - Control", x = "Transplanter", y = "GFP+ (%)") +
+  labs(title = "PB Engraftment - Control", x = "Transplanter", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
   scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
   stat_compare_means(method="anova", hjust=0, vjust=0.2, size=4) +
@@ -722,7 +721,7 @@ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="erro
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
   geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
   ylim(0, 105) +
-  labs(title = "Engraftment - miR-532", x = "Transplanter", y = "GFP+ (%)") +
+  labs(title = "PB Engraftment - miR-532", x = "Transplanter", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
   scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
   stat_compare_means(method="anova", hjust=0, vjust=0.2, size=4) +

@@ -46,7 +46,7 @@ We will make a copy of the total data for manipulation:
 What are the dimensions of our data?
 
 ```
-## [1] 368  21
+## [1] 389  21
 ```
 
 ## Peripheral bleeds 5 weeks post-transplant:
@@ -81,7 +81,6 @@ Let's make dotplots for our CBC counts:
 
 
 ![](wk5_CBC_files/figure-html/MCH-1.png)<!-- -->
-
 
 
 ![](wk5_CBC_files/figure-html/MCHC-1.png)<!-- -->
