@@ -1,0 +1,876 @@
+---
+title: "CBC_total"
+author: "Patrick Lac"
+date: "May 13, 2020"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
+```
+
+``` {r library, message = F}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(cowplot)
+library(gridExtra)
+library(rstatix)
+```
+
+Let's begin by importing our data:
+
+``` {r import.data}
+metadata <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/BMT_MetaData.csv")
+JL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/JL_532_BMT_Data.csv")
+MB_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/MB_532_BMT_Data.csv")
+PL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/PL_532_BMT_Data.csv")
+```
+
+Next lets attach the different peripheral blood data together:
+``` {r combine.data}
+Total_PB_data <- rbind(JL_data, MB_data, PL_data)
+head(Total_PB_data)
+```
+
+``` {r data.copy}
+Data.copy <- Total_PB_data
+```
+
+``` {r filter.11weeks}
+Data.sub.wk5 <- subset(Data.copy, Weeks.post.transplant == 5)
+
+week10data <- subset(Data.copy, Weeks.post.transplant == 10)
+week11data <- subset(Data.copy, Weeks.post.transplant == 11)
+Data.sub.wk11 <- rbind(week10data, week11data)
+Data.sub.wk11$Weeks.post.transplant <- 11
+
+week16data <- subset(Data.copy, Weeks.post.transplant == 16)
+week17data <- subset(Data.copy, Weeks.post.transplant == 17)
+week18data <- subset(Data.copy, Weeks.post.transplant == 18)
+Data.sub.wk17 <- rbind(week16data, week17data, week18data)
+Data.sub.wk17$Weeks.post.transplant <- 17
+```
+
+``` {r WBC.wk5, fig.width=3,fig.height=3.5}
+WBC.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=WBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  ylim(0, 13) +
+  labs(title = "White blood cells week 5", x = "Treatment", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+WBC.wk5
+```
+
+
+
+```{r RBC.wk5, fig.width=3,fig.height=3}
+RBC.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=RBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  ylim(0, 16) +
+  labs(title = "Red blood cells week 5", x = "Treatment", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0.03, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RBC.wk5
+```
+
+
+
+```{r HGB, fig.width=3,fig.height=3}
+HGB.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=HGB, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
+  ylim(0, 25) +
+  labs(title = "Hemoglobin week 5", x = "Treatment", y = "HGB (g/dL)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.07, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HGB.wk5
+```
+
+
+
+```{r HCT.wk5, fig.width=3,fig.height=3}
+HCT.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=HCT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Hematocrit week 5", x = "Treatment", y = "HCT (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HCT.wk5
+```
+
+
+```{r MCV.wk5, fig.width=3,fig.height=3}
+MCV.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=MCV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
+  ylim(35, 55) +
+  labs(title = "Mean corpuscular volume week 5", x = "Treatment", y = "MCV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCV.wk5
+```
+
+
+
+```{r MCH.wk5, fig.width=3,fig.height=3}
+MCH.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=MCH, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Mean corpuscular hemoglobin week 5", x = "Treatment", y = "MCH (pg)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCH.wk5
+```
+
+
+```{r MCHC.wk5, fig.width=3,fig.height=3.2}
+MCHC.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=MCHC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
+  ylim(10, 40) +
+  labs(title = "Mean corpuscular \n hemoglobin concentration week 5", x = "Treatment", y = "MCHC (g/dl)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCHC.wk5
+```
+
+```{r PLT.wk5, fig.width=3,fig.height=3}
+PLT.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=PLT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
+  ylim(0, 1600) +
+  labs(title = "Platelets week 5", x = "Treatment", y = "PLT (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+PLT.wk5
+```
+
+```{r MPV.wk5, fig.width=3,fig.height=3}
+MPV.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=MPV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
+  ylim(0, 10) +
+  labs(title = "Mean platelet volume week 5", x = "Treatment", y = "MPV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MPV.wk5
+```
+
+```{r RDW.wk5, fig.width=3,fig.height=3}
+RDW.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=RDW, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
+  ylim(5, 30) +
+  labs(title = "RBC distribution width week 5", x = "Treatment", y = "RDW (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RDW.wk5
+```
+
+```{r Percent.Lym.wk5, fig.width=3,fig.height=3.5}
+Percent.Lym.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=Percent.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Lymphocyte frequency week 5", x = "Treatment", y = "Lym (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Lym.wk5
+```
+
+```{r Percent.Mon.wk5, fig.width=3,fig.height=3.5}
+Percent.Mon.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=Percent.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = .1, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Monocyte frequency week 5", x = "Treatment", y = "Mon (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Mon.wk5
+```
+
+```{r Percent.Gra.wk5, fig.width=3,fig.height=3.5}
+Percent.Gra.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=Percent.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=20) + 
+  ylim(0, 80) +
+  labs(title = "Granulocyte frequency week 5", x = "Treatment", y = "Gra (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Gra.wk5
+```
+
+```{r Number.Lym.wk5, fig.width=3,fig.height=3}
+Number.Lym.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=Number.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
+  ylim(0, 8) +
+  labs(title = "Lymphocyte count week 5", x = "Treatment", y = "Lym (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Lym.wk5
+```
+
+```{r Number.Mon.wk5, fig.width=3,fig.height=3}
+Number.Mon.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=Number.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
+  ylim(0, 1.25) +
+  labs(title = "Monocyte count week 5", x = "Treatment", y = "Mon (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Mon.wk5
+```
+
+```{r Number.Gra.wk5, fig.width=3,fig.height=3}
+Number.Gra.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=Number.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 8) +
+  labs(title = "Granulocyte count week 5", x = "Treatment", y = "Gra (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Gra.wk5
+```
+
+```{r GFP.wk5, fig.width=4,fig.height=4}
+GFP.wk5 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=GFP, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 105) +
+  labs(title = "PB Engraftment week 5", x = "Treatment", y = "GFP+ (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+GFP.wk5
+```
+
+
+
+``` {r WBC.wk11, fig.width=3,fig.height=3.5}
+WBC.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=WBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  ylim(0, 13) +
+  labs(title = "White blood cells week 11", x = "Treatment", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+WBC.wk11
+```
+
+```{r RBC.wk11, fig.width=3,fig.height=3}
+RBC.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=RBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  ylim(0, 16) +
+  labs(title = "Red blood cells week 11", x = "Treatment", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0.03, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RBC.wk11
+```
+
+```{r HGB.wk11, fig.width=3,fig.height=3}
+HGB.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=HGB, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
+  ylim(0, 25) +
+  labs(title = "Hemoglobin week 11", x = "Treatment", y = "HGB (g/dL)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.07, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HGB.wk11
+```
+
+```{r HCT.wk11, fig.width=3,fig.height=3}
+HCT.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=HCT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Hematocrit week 11", x = "Treatment", y = "HCT (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HCT.wk11
+```
+
+
+```{r MCV.wk11, fig.width=3,fig.height=3}
+MCV.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=MCV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
+  ylim(35, 55) +
+  labs(title = "Mean corpuscular volume week 11", x = "Treatment", y = "MCV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCV.wk11
+```
+
+```{r MCH.wk11, fig.width=3,fig.height=3}
+MCH.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=MCH, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Mean corpuscular hemoglobin week 11", x = "Treatment", y = "MCH (pg)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCH.wk11
+```
+
+```{r MCHC.wk11, fig.width=3,fig.height=3.2}
+MCHC.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=MCHC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
+  ylim(10, 40) +
+  labs(title = "Mean corpuscular \n hemoglobin concentration week 11", x = "Treatment", y = "MCHC (g/dl)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCHC.wk11
+```
+
+```{r PLT.wk11, fig.width=3,fig.height=3}
+PLT.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=PLT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
+  ylim(0, 1600) +
+  labs(title = "Platelets week 11", x = "Treatment", y = "PLT (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+PLT.wk11
+```
+
+```{r MPV.wk11, fig.width=3,fig.height=3}
+MPV.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=MPV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
+  ylim(0, 10) +
+  labs(title = "Mean platelet volume week 11", x = "Treatment", y = "MPV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MPV.wk11
+```
+
+```{r RDW.wk11, fig.width=3,fig.height=3}
+RDW.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=RDW, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
+  ylim(5, 30) +
+  labs(title = "RBC distribution width week 11", x = "Treatment", y = "RDW (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RDW.wk11
+```
+
+```{r Percent.Lym.wk11, fig.width=3,fig.height=3.5}
+Percent.Lym.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=Percent.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Lymphocyte frequency week 11", x = "Treatment", y = "Lym (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Lym.wk11
+```
+
+
+
+```{r Percent.Mon.wk11, fig.width=3,fig.height=3.5}
+Percent.Mon.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=Percent.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = .1, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Monocyte frequency week 11", x = "Treatment", y = "Mon (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Mon.wk11
+```
+
+```{r Percent.Gra.wk11, fig.width=3,fig.height=3.5}
+Percent.Gra.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=Percent.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=20) + 
+  ylim(0, 80) +
+  labs(title = "Granulocyte frequency week 11", x = "Treatment", y = "Gra (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Gra.wk11
+```
+
+```{r Number.Lym.wk11, fig.width=3,fig.height=3}
+Number.Lym.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=Number.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
+  ylim(0, 8) +
+  labs(title = "Lymphocyte count week 11", x = "Treatment", y = "Lym (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Lym.wk11
+```
+
+```{r Number.Mon.wk11, fig.width=3,fig.height=3}
+Number.Mon.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=Number.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
+  ylim(0, 1.25) +
+  labs(title = "Monocyte count week 11", x = "Treatment", y = "Mon (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Mon.wk11
+```
+
+```{r Number.Gra.wk11, fig.width=3,fig.height=3}
+Number.Gra.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=Number.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 8) +
+  labs(title = "Granulocyte count week 11", x = "Treatment", y = "Gra (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Gra.wk11
+```
+
+```{r GFP.wk11, fig.width=4,fig.height=4}
+GFP.wk11 <- ggplot(Data.sub.wk11, aes(x=Treatment, y=GFP, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 105) +
+  labs(title = "PB Engraftment week 11", x = "Treatment", y = "GFP+ (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+GFP.wk11
+```
+
+``` {r WBC.wk17, fig.width=3,fig.height=3.5}
+WBC.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=WBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  ylim(0, 13) +
+  labs(title = "White blood cells week 17", x = "Treatment", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+WBC.wk17
+```
+
+
+
+```{r RBC.wk17, fig.width=3,fig.height=3}
+RBC.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=RBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom ="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  ylim(0, 16) +
+  labs(title = "Red blood cells week 17", x = "Treatment", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0.03, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RBC.wk17
+```
+
+
+
+```{r HGB.wk17, fig.width=3,fig.height=3}
+HGB.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=HGB, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
+  ylim(0, 25) +
+  labs(title = "Hemoglobin week 17", x = "Treatment", y = "HGB (g/dL)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.07, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HGB.wk17
+```
+
+
+
+```{r HCT.wk17, fig.width=3,fig.height=3}
+HCT.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=HCT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Hematocrit week 17", x = "Treatment", y = "HCT (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HCT.wk17
+```
+
+
+```{r MCV.wk17, fig.width=3,fig.height=3}
+MCV.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=MCV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
+  ylim(35, 55) +
+  labs(title = "Mean corpuscular volume week 17", x = "Treatment", y = "MCV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCV.wk17
+```
+
+
+
+```{r MCH.wk17, fig.width=3,fig.height=3}
+MCH.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=MCH, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Mean corpuscular hemoglobin week 17", x = "Treatment", y = "MCH (pg)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCH.wk17
+```
+
+
+```{r MCHC.wk17, fig.width=3,fig.height=3.2}
+MCHC.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=MCHC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
+  ylim(10, 40) +
+  labs(title = "Mean corpuscular \n hemoglobin concentration week 17", x = "Treatment", y = "MCHC (g/dl)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCHC.wk17
+```
+
+```{r PLT.wk17, fig.width=3,fig.height=3}
+PLT.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=PLT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
+  ylim(0, 1600) +
+  labs(title = "Platelets week 17", x = "Treatment", y = "PLT (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+PLT.wk17
+```
+
+```{r MPV.wk17, fig.width=3,fig.height=3}
+MPV.wk17 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=MPV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
+  ylim(0, 10) +
+  labs(title = "Mean platelet volume week 17", x = "Treatment", y = "MPV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MPV.wk17
+```
+
+```{r RDW.wk17, fig.width=3,fig.height=3}
+RDW.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=RDW, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
+  ylim(5, 30) +
+  labs(title = "RBC distribution width week 17", x = "Treatment", y = "RDW (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RDW.wk17
+```
+
+```{r Percent.Lym.wk5, fig.width=3,fig.height=3.5}
+Percent.Lym.wk17 <- ggplot(Data.sub.wk5, aes(x=Treatment, y=Percent.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Lymphocyte frequency week 17", x = "Treatment", y = "Lym (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Lym.wk17
+```
+
+```{r Percent.Mon.wk17, fig.width=3,fig.height=3.5}
+Percent.Mon.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=Percent.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = .1, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Monocyte frequency week 17", x = "Treatment", y = "Mon (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Mon.wk17
+```
+
+```{r Percent.Gra.wk17, fig.width=3,fig.height=3.5}
+Percent.Gra.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=Percent.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=20) + 
+  ylim(0, 80) +
+  labs(title = "Granulocyte frequency week 17", x = "Treatment", y = "Gra (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Percent.Gra.wk17
+```
+
+```{r Number.Lym.wk17, fig.width=3,fig.height=3}
+Number.Lym.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=Number.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
+  ylim(0, 8) +
+  labs(title = "Lymphocyte count week 17", x = "Treatment", y = "Lym (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Lym.wk17
+```
+
+```{r Number.Mon.wk17, fig.width=3,fig.height=3}
+Number.Mon.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=Number.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
+  ylim(0, 1.25) +
+  labs(title = "Monocyte count week 17", x = "Treatment", y = "Mon (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Mon.wk17
+```
+
+```{r Number.Gra.wk17, fig.width=3,fig.height=3}
+Number.Gra.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=Number.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 8) +
+  labs(title = "Granulocyte count week 17", x = "Treatment", y = "Gra (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Gra.wk17
+```
+
+```{r GFP.wk17, fig.width=4,fig.height=4}
+GFP.wk17 <- ggplot(Data.sub.wk17, aes(x=Treatment, y=GFP, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 105) +
+  labs(title = "PB Engraftment week 17", x = "Treatment", y = "GFP+ (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20-25)", "miR-532 (n=28-33)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+GFP.wk17
+```
+
+``` {r graphs.WBC, fig.width=10, fig.height=4}
+WBC.graphs <- ggarrange(WBC.wk5, WBC.wk11, WBC.wk17, 
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+WBC.graphs
+
+RBC.graphs <- ggarrange(RBC.wk5, RBC.wk11, RBC.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+RBC.graphs
+
+HGB.graphs <- ggarrange(HGB.wk5, HGB.wk11, HGB.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+HGB.graphs
+
+HCT.graphs <- ggarrange(HCT.wk5, HCT.wk11, HCT.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+HCT.graphs
+
+MCV.graphs <- ggarrange(MCV.wk5, MCV.wk11, MCV.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+MCV.graphs
+
+MCH.graphs <- ggarrange(MCH.wk5, MCH.wk11, MCH.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+MCH.graphs
+
+MCHC.graphs <- ggarrange(MCHC.wk5, MCHC.wk11, MCHC.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+MCHC.graphs
+
+PLT.graphs <- ggarrange(PLT.wk5, PLT.wk11, PLT.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+PLT.graphs
+
+MPV.graphs <- ggarrange(MPV.wk5, MPV.wk11, MPV.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+MPV.graphs
+
+RDW.graphs <- ggarrange(RDW.wk5, RDW.wk11, RDW.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+RDW.graphs
+
+Number.Lym.graphs <- ggarrange(Number.Lym.wk5, Number.Lym.wk11, Number.Lym.wk17,
+          labels = "auto",
+       ncol=3, nrow=1, common.legend = T, legend="bottom")
+Number.Lym.graphs
+
+Number.Mon.graphs <- ggarrange(Number.Mon.wk5, Number.Mon.wk11, Number.Mon.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+Number.Mon.graphs
+
+Number.Gra.graphs <- ggarrange(Number.Gra.wk5, Number.Gra.wk11, Number.Gra.wk17,
+          labels = "auto",
+        ncol=3, nrow=1, common.legend = T, legend="bottom")
+Number.Gra.graphs
+
+GFP.graphs <- ggarrange(GFP.wk5, GFP.wk11, GFP.wk17,
+          labels = "auto",
+          ncol=3, nrow=1, common.legend = T, legend="bottom")
+GFP.graphs
+```

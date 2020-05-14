@@ -42,23 +42,24 @@ We will make a copy of the total data for manipulation:
 Data.copy <- Total_PB_data
 ```
 
-Next we will filter for CBC data at 5 weeks post-transplant
-``` {r filter.5weeks}
-Data.wk5 <- subset(Data.copy, Weeks.post.transplant == 5)
-head(Data.wk5)
-```
-
-Next we will filter for CBC data at 11 weeks post-transplant
+Next we will filter for CBC data
 ``` {r filter.11weeks}
+Data.wk5 <- subset(Data.copy, Weeks.post.transplant == 5)
+
 week10data <- subset(Data.copy, Weeks.post.transplant == 10)
 week11data <- subset(Data.copy, Weeks.post.transplant == 11)
 Data.wk11 <- rbind(week10data, week11data)
 Data.wk11$Weeks.post.transplant <- 11
-head(Data.wk11)
+
+week16data <- subset(Data.copy, Weeks.post.transplant == 16)
+week17data <- subset(Data.copy, Weeks.post.transplant == 17)
+week18data <- subset(Data.copy, Weeks.post.transplant == 18)
+Data.wk17 <- rbind(week16data, week17data, week18data)
+Data.wk17$Weeks.post.transplant <- 17
 ```
 Next we will bind these our data together
 ``` {r binddata}
-Graph.data <- rbind(Data.wk5, Data.wk11)
+Graph.data <- rbind(Data.wk5, Data.wk11, Data.wk17)
 Graph.data$Weeks.post.transplant <- as.factor(Graph.data$Weeks.post.transplant)
 ```
 
@@ -97,153 +98,258 @@ summary.GFP <- data_summary(Graph.data, varname = "GFP", groupnames = c("Treatme
 
 Now let's try to make a line plot:
 ```{r lineplot.WBC}
-ggplot(data=summary.WBC, aes(x=Weeks.post.transplant,y=WBC, group=Treatment, color=Treatment)) +
+df <- data.frame(
+  x=c("5","11","17"),
+  y=c(10,10,12),
+  text= c("#1","#2", "#3"))
+
+lineplot.WBC <- ggplot(data=summary.WBC, aes(x=Weeks.post.transplant,y=WBC, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=WBC-sd, ymax=WBC+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 13) +
   labs(title = "White blood cells", x = "Weeks post-transplant", y = "WBC (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=10, label="p=0.11") +
+  annotate("text", x=2, y=10, label="p=0.58") +
+  annotate("text", x=3, y=12, label="p=0.94")
+
+lineplot.WBC
 ```
 
 ```{r lineplot.RBC}
-ggplot(data=summary.RBC, aes(x=Weeks.post.transplant,y=RBC, group=Treatment, color=Treatment)) +
+lineplot.RBC <- ggplot(data=summary.RBC, aes(x=Weeks.post.transplant,y=RBC, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=RBC-sd, ymax=RBC+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 16) +
   labs(title = "Red blood cells", x = "Treatment", y = "RBC (10"^"6"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=14, label="p=0.018") +
+  annotate("text", x=2, y=14, label="p=0.45") +
+  annotate("text", x=3, y=14, label="p=0.59")
+
+lineplot.RBC
 ```
 ```{r lineplot.HGB}
-ggplot(data=summary.HGB, aes(x=Weeks.post.transplant,y=HGB, group=Treatment, color=Treatment)) +
+lineplot.HGB <- ggplot(data=summary.HGB, aes(x=Weeks.post.transplant,y=HGB, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=HGB-sd, ymax=HGB+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 25) +
   labs(title = "Hemoglobin", x = "Treatment", y = "HGB (g/dL)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=18, label="p=0.1") +
+  annotate("text", x=2, y=19, label="p=0.49") +
+  annotate("text", x=3, y=18, label="p=0.7")
+lineplot.HGB
 ```
 
 ```{r lineplot.HCT}
-ggplot(data=summary.HCT, aes(x=Weeks.post.transplant,y=HCT, group=Treatment, color=Treatment)) +
+lineplot.HCT <- ggplot(data=summary.HCT, aes(x=Weeks.post.transplant,y=HCT, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=HCT-sd, ymax=HCT+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 80) +
   labs(title = "Hematocrit", x = "Treatment", y = "HCT (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=65, label="p=0.085") +
+  annotate("text", x=2, y=65, label="p=0.51") +
+  annotate("text", x=3, y=65, label="p=0.71")
+
+lineplot.HCT
 ```
 
 ```{r lineplot.MCV}
-ggplot(data=summary.MCV, aes(x=Weeks.post.transplant,y=MCV, group=Treatment, color=Treatment)) +
+lineplot.MCV <- ggplot(data=summary.MCV, aes(x=Weeks.post.transplant,y=MCV, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=MCV-sd, ymax=MCV+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(35, 55) +
   labs(title = "Mean corpuscular volume", x = "Treatment", y = "MCV ("~mu~"m"^"3"*")") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=49, label="p=0.19") +
+  annotate("text", x=2, y=49, label="p=0.43") +
+  annotate("text", x=3, y=49, label="p=0.45")
+
+lineplot.MCV
 ```
 
 ```{r lineplot.MCH}
-ggplot(data=summary.MCH, aes(x=Weeks.post.transplant,y=MCH, group=Treatment, color=Treatment)) +
+lineplot.MCH <- ggplot(data=summary.MCH, aes(x=Weeks.post.transplant,y=MCH, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=MCH-sd, ymax=MCH+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 20) +
   labs(title = "Mean corpuscular hemoglobin", x = "Treatment", y = "MCH (pg)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=17, label="p=0.29") +
+  annotate("text", x=2, y=17, label="p=0.77") +
+  annotate("text", x=3, y=17, label="p=0.29")
+
+lineplot.MCH
 ```
 
 ```{r lineplot.MCHC}
-ggplot(data=summary.MCHC, aes(x=Weeks.post.transplant,y=MCHC, group=Treatment, color=Treatment)) +
+lineplot.MCHC <- ggplot(data=summary.MCHC, aes(x=Weeks.post.transplant,y=MCHC, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=MCHC-sd, ymax=MCHC+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(10, 40) +
   labs(title = "Mean corpuscular \n hemoglobin concentration", x = "Treatment", y = "MCHC (g/dl)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=35, label="p=0.47") +
+  annotate("text", x=2, y=35, label="p=0.72") +
+  annotate("text", x=3, y=37, label="p=0.86")
+
+lineplot.MCHC
 ```
 
 ```{r lineplot.PLT}
-ggplot(data=summary.PLT, aes(x=Weeks.post.transplant,y=PLT, group=Treatment, color=Treatment)) +
+lineplot.PLT <- ggplot(data=summary.PLT, aes(x=Weeks.post.transplant,y=PLT, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=PLT-sd, ymax=PLT+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 1600) +
   labs(title = "Platelets", x = "Treatment", y = "PLT (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=1000, label="p=0.36") +
+  annotate("text", x=2, y=1200, label="p=0.026") +
+  annotate("text", x=3, y=1250, label="p=0.15")
+
+lineplot.PLT
 ```
 
 ```{r lineplot.MPV}
-ggplot(data=summary.MPV, aes(x=Weeks.post.transplant,y=MPV, group=Treatment, color=Treatment)) +
+lineplot.MPV <- ggplot(data=summary.MPV, aes(x=Weeks.post.transplant,y=MPV, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=MPV-sd, ymax=MPV+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 10) +
   labs(title = "Mean platelet volume", x = "Treatment", y = "MPV ("~mu~"m"^"3"*")") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=8, label="p=0.93") +
+  annotate("text", x=2, y=8, label="p=0.2") +
+  annotate("text", x=3, y=8, label="p=0.93")
+
+lineplot.MPV
 ```
 
 ```{r lineplot.RDW}
-ggplot(data=summary.RDW, aes(x=Weeks.post.transplant,y=RDW, group=Treatment, color=Treatment)) +
+lineplot.RDW <- ggplot(data=summary.RDW, aes(x=Weeks.post.transplant,y=RDW, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=RDW-sd, ymax=RDW+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(5, 30) +
   labs(title = "RBC distribution width", x = "Treatment", y = "RDW (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=20, label="p=0.67") +
+  annotate("text", x=2, y=20, label="p=0.59") +
+  annotate("text", x=3, y=20, label="p=0.28")
+
+lineplot.RDW
 ```
 ```{r lineplot.Number.Lym}
-ggplot(data=summary.Number.Lym, aes(x=Weeks.post.transplant,y=Number.Lym, group=Treatment, color=Treatment)) +
+lineplot.Number.Lym <- ggplot(data=summary.Number.Lym, aes(x=Weeks.post.transplant,y=Number.Lym, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=Number.Lym-sd, ymax=Number.Lym+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
    ylim(0, 8) +
   labs(title = "Lymphocyte count", x = "Treatment", y = "Lym (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=4.5, label="p=0.47") +
+  annotate("text", x=2, y=6, label="p=0.8") +
+  annotate("text", x=3, y=6, label="p=0.68")
+
+lineplot.Number.Lym
 ```
 
 ```{r lineplot.Number.Mon}
-ggplot(data=summary.Number.Mon, aes(x=Weeks.post.transplant,y=Number.Mon, group=Treatment, color=Treatment)) +
+lineplot.Number.Mon <- ggplot(data=summary.Number.Mon, aes(x=Weeks.post.transplant,y=Number.Mon, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=Number.Mon-sd, ymax=Number.Mon+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 1.25) +
   labs(title = "Monocyte count", x = "Treatment", y = "Mon (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=0.75, label="p=0.44") +
+  annotate("text", x=2, y=0.8, label="p=0.7") +
+  annotate("text", x=3, y=0.85, label="p=0.96")
+
+lineplot.Number.Mon
 ```
 
 ```{r lineplot.Number.Gra}
-ggplot(data=summary.Number.Gra, aes(x=Weeks.post.transplant,y=Number.Gra, group=Treatment, color=Treatment)) +
+lineplot.Number.Gra <- ggplot(data=summary.Number.Gra, aes(x=Weeks.post.transplant,y=Number.Gra, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=Number.Gra-sd, ymax=Number.Gra+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
-  ylim(0, 8) +
+  ylim(-1, 8) +
   labs(title = "Granulocyte count", x = "Treatment", y = "Gra (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
-  theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=4.5, label="p=0.13") +
+  annotate("text", x=2, y=4.5, label="p=0.58") +
+  annotate("text", x=3, y=4.5, label="p=0.56")
+
+lineplot.Number.Gra
 ```
 
 ```{r lineplot.GFP}
-ggplot(data=summary.GFP, aes(x=Weeks.post.transplant,y=GFP, group=Treatment, color=Treatment)) +
+lineplot.GFP <- ggplot(data=summary.GFP, aes(x=Weeks.post.transplant,y=GFP, group=Treatment, color=Treatment)) +
   geom_errorbar(aes(ymin=GFP-sd, ymax=GFP+sd), width=.1, size = 1, position=position_dodge(0.05)) +
   geom_line(size=1.25)+
   geom_point(size=2) +
   ylim(0, 105) +
   labs(title = "PB Engraftment", x = "Treatment", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
+  theme(axis.text = element_text(size=12), axis.title = element_text(size=14)) +
+  annotate("text", x=1, y=10, label="p=") +
+  annotate("text", x=2, y=10, label="p=") +
+  annotate("text", x=3, y=10, label="p=")
+
+lineplot.GFP
+```
+
+### Now let's arrange the plots:
+#### Figure 1
+```{r fig1, fig.width=10, fig.height=11}
+fig1 <- ggarrange(lineplot.WBC, lineplot.RBC, lineplot.PLT, lineplot.Number.Lym, lineplot.Number.Mon, lineplot.Number.Gra,
+          labels = "auto",
+          ncol=3, nrow=2, common.legend = T, legend="bottom")
+fig1
+```     
+
+#### Figure 2
+```{r fig2, fig.width=10, fig.height=11}
+fig2 <- ggarrange(lineplot.HCT, lineplot.MPV, lineplot.HGB, lineplot.RDW, lineplot.MCV, lineplot.MCH, lineplot.MCHC, lineplot.GFP,
+         labels = "auto",
+          ncol=3, nrow=3, common.legend = T, legend="bottom")
+fig2
+```   
+
+Now let's try to make a line plot:
+```{r lineplot.WBC}
+lineplot.WBC.all <- ggplot(data=Graph.data, aes(x=Weeks.post.transplant,y=WBC, group=Treatment, color=Treatment)) +
+  
+  geom_line(size=1.25)+
+  geom_point(size=2) +
+  ylim(0, 13) +
+  labs(title = "White blood cells", x = "Weeks post-transplant", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=14)) +
   theme(axis.text = element_text(size=12), axis.title = element_text(size=14))
+
+lineplot.WBC.all
 ```
