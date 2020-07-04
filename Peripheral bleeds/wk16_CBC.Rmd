@@ -830,7 +830,6 @@ transplanter.Number.Gra.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Numbe
 ```
 
 
-
 ``` {r transplanter, fig.width=10, fig.height=4}
 WBC.transplanter <- ggarrange(transplanter.WBC.control, transplanter.WBC.miR532, 
           labels = "auto",
@@ -885,9 +884,6 @@ Number.Gra.transplanter <- ggarrange(transplanter.Number.Gra.control, transplant
           labels = "auto",
           ncol=2, nrow=1, common.legend = F, legend="none")
 
-GFP.transplanter <- ggarrange(transplanter.GFP.control, transplanter.GFP.miR532, 
-          labels = "auto",
-          ncol=2, nrow=1, common.legend = F, legend="none")
 
 WBC.transplanter
 RBC.transplanter
@@ -902,7 +898,34 @@ RDW.transplanter
 Number.Lym.transplanter
 Number.Mon.transplanter
 Number.Gra.transplanter
-GFP.transplanter
+
 ```
+
+```{r fig3, fig.width=15, fig.height=10}
+fig3 <- ggarrange(transplanter.WBC.control, transplanter.WBC.miR532, transplanter.RBC.control, transplanter.RBC.miR532, transplanter.HGB.control, transplanter.HGB.miR532,  transplanter.PLT.control, transplanter.PLT.miR532,
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig3
+```   
+
+```{r fig4, fig.width=15, fig.height=10}
+fig4 <- ggarrange( transplanter.MCV.control, transplanter.MCV.miR532, transplanter.MCH.control, transplanter.MCH.miR532, transplanter.MCHC.control, transplanter.MCHC.miR532,  
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig4
+```  
+
+```{r fig5, fig.width=15, fig.height=10}
+fig5 <- ggarrange(transplanter.MPV.control, transplanter.MPV.miR532, transplanter.RDW.control, transplanter.RDW.miR532, transplanter.HCT.control, transplanter.HCT.miR532,
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig5
+```    
+
+```{r fig6, fig.width=15, fig.height=10}
+fig6 <- ggarrange(transplanter.Number.Lym.control, transplanter.Number.Lym.miR532, transplanter.Number.Mon.control, transplanter.Number.Mon.miR532, transplanter.Number.Gra.control, transplanter.Number.Gra.miR532, 
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig6
+```  
 
 

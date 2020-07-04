@@ -494,7 +494,7 @@ Now let's make dot plots for the CBC data by transplanter
 transplanter.WBC.control <- ggplot(all.control, aes(x=Transplanter, y=WBC)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3, color = "red") + 
   ylim(0, 13) +
   labs(title = "White blood cells - Control", x = "Transplanter", y = "WBC (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -506,7 +506,7 @@ transplanter.WBC.control <- ggplot(all.control, aes(x=Transplanter, y=WBC)) +
 transplanter.WBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=WBC)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3, color = "blue") + 
   ylim(0, 13) +
   labs(title = "White blood cells - miR-532", x = "Transplanter", y = "WBC (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -520,7 +520,7 @@ transplanter.WBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=WBC)) +
 transplanter.RBC.control <- ggplot(all.control, aes(x=Transplanter, y=RBC)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5, color = "red") + 
   ylim(0, 16) +
   labs(title = "Red blood cells - Control", x = "Transplanter", y = "RBC (10"^"6"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -532,7 +532,7 @@ transplanter.RBC.control <- ggplot(all.control, aes(x=Transplanter, y=RBC)) +
 transplanter.RBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RBC)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5, color = "blue") + 
   ylim(0, 16) +
   labs(title = "Red blood cells - miR-532", x = "Transplanter", y = "RBC (10"^"6"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -546,7 +546,7 @@ transplanter.RBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RBC)) +
 transplanter.HGB.control <- ggplot(all.control, aes(x=Transplanter, y=HGB)) +
    stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5, color = "red") + 
   ylim(0, 25) +
   labs(title = "Hemoglobin - Control", x = "Transplanter", y = "HGB (g/dL)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -558,7 +558,7 @@ transplanter.HGB.control <- ggplot(all.control, aes(x=Transplanter, y=HGB)) +
 transplanter.HGB.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HGB)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5, color = "blue") + 
   ylim(0, 25) +
   labs(title = "Hemoglobin - miR-532", x = "Transplanter", y = "HGB (g/dL)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -572,7 +572,7 @@ transplanter.HGB.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HGB)) +
 transplanter.HCT.control <- ggplot(all.control, aes(x=Transplanter, y=HCT)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2, color = "red") + 
   ylim(0, 80) +
   labs(title = "Hematocrit - Control", x = "Transplanter", y = "HCT (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -584,7 +584,7 @@ transplanter.HCT.control <- ggplot(all.control, aes(x=Transplanter, y=HCT)) +
 transplanter.HCT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HCT)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2, color = "blue") + 
   ylim(0, 80) +
   labs(title = "Hematocrit - miR-532", x = "Transplanter", y = "HCT (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -598,7 +598,7 @@ transplanter.HCT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HCT)) +
 transplanter.MCV.control <- ggplot(all.control, aes(x=Transplanter, y=MCV)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5, color = "red") + 
   ylim(35, 55) +
   labs(title = "Mean corpuscular volume - Control", x = "Transplanter", y = "MCV ("~mu~"m"^"3"*")") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -610,7 +610,7 @@ transplanter.MCV.control <- ggplot(all.control, aes(x=Transplanter, y=MCV)) +
 transplanter.MCV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCV)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5, color = "blue") + 
   ylim(35, 55) +
   labs(title = "Mean corpuscular volume - miR-532", x = "Transplanter", y = "MCV ("~mu~"m"^"3"*")") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -624,7 +624,7 @@ transplanter.MCV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCV)) +
 transplanter.MCH.control <- ggplot(all.control, aes(x=Transplanter, y=MCH)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5, color = "red") + 
   ylim(0, 20) +
   labs(title = "Mean corpuscular hemoglobin - Control", x = "Transplanter", y = "MCH (pg)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -636,7 +636,7 @@ transplanter.MCH.control <- ggplot(all.control, aes(x=Transplanter, y=MCH)) +
 transplanter.MCH.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCH)) +
   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5, color = "blue") + 
   ylim(0, 20) +
   labs(title = "Mean corpuscular hemoglobin - miR-532", x = "Transplanter", y = "MCH (pg)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -650,7 +650,7 @@ transplanter.MCH.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCH)) +
 transplanter.MCHC.control <- ggplot(all.control, aes(x=Transplanter, y=MCHC)) +
 stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10, color = "red") + 
   ylim(10, 40) +
   labs(title = "Mean corpuscular \n hemoglobin concentration - Control", x = "Transplanter", y = "MCHC (g/dl)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -662,7 +662,7 @@ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="err
 transplanter.MCHC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCHC)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10, color = "blue") + 
   ylim(10, 40) +
   labs(title = "Mean corpuscular \n hemoglobin concentration - miR-532", x = "Transplanter", y = "MCHC (g/dl)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -676,7 +676,7 @@ transplanter.MCHC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCHC)) +
 transplanter.PLT.control <- ggplot(all.control, aes(x=Transplanter, y=PLT)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30, color = "red") + 
   ylim(0, 1600) +
   labs(title = "Platelets - Control", x = "Transplanter", y = "PLT (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -688,7 +688,7 @@ transplanter.PLT.control <- ggplot(all.control, aes(x=Transplanter, y=PLT)) +
 transplanter.PLT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=PLT)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30, color = "blue") + 
   ylim(0, 1600) +
   labs(title = "Platelets - miR-532", x = "Transplanter", y = "PLT (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -702,7 +702,7 @@ transplanter.PLT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=PLT)) +
 transplanter.MPV.control <- ggplot(all.control, aes(x=Transplanter, y=MPV)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5, color = "red") + 
   ylim(0, 10) +
   labs(title = "Mean platelet volume - Control", x = "Transplanter", y = "MPV ("~mu~"m"^"3"*")") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -714,7 +714,7 @@ transplanter.MPV.control <- ggplot(all.control, aes(x=Transplanter, y=MPV)) +
 transplanter.MPV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MPV)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5, color = "blue") + 
   ylim(0, 10) +
   labs(title = "Mean platelet volume - miR-532", x = "Transplanter", y = "MPV ("~mu~"m"^"3"*")") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -728,7 +728,7 @@ transplanter.MPV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MPV)) +
 transplanter.RDW.control <- ggplot(all.control, aes(x=Transplanter, y=RDW)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6, color = "red") + 
   ylim(5, 30) +
   labs(title = "RBC distribution width - Control", x = "Transplanter", y = "RDW (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -740,7 +740,7 @@ transplanter.RDW.control <- ggplot(all.control, aes(x=Transplanter, y=RDW)) +
 transplanter.RDW.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RDW)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6, color = "blue") + 
   ylim(5, 30) +
   labs(title = "RBC distribution width - miR-532", x = "Transplanter", y = "RDW (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -754,7 +754,7 @@ transplanter.RDW.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RDW)) +
 transplanter.Number.Lym.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Lym)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4, color = "red") + 
   ylim(0, 8) +
   labs(title = "Lymphocyte count - Control", x = "Transplanter", y = "Lym (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -766,7 +766,7 @@ transplanter.Number.Lym.control <- ggplot(all.control, aes(x=Transplanter, y=Num
 transplanter.Number.Lym.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Lym)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4, color = "blue") + 
   ylim(0, 8) +
   labs(title = "Lymphocyte count - miR-532", x = "Transplanter", y = "Lym (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -780,7 +780,7 @@ transplanter.Number.Lym.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Numbe
 transplanter.Number.Mon.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Mon)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7, color = "red") + 
   ylim(0, 1.25) +
   labs(title = "Monocyte count - Control", x = "Transplanter", y = "Mon (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -792,7 +792,7 @@ transplanter.Number.Mon.control <- ggplot(all.control, aes(x=Transplanter, y=Num
 transplanter.Number.Mon.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Mon)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7, color = "blue") + 
   ylim(0, 1.25) +
   labs(title = "Monocyte count - miR-532", x = "Transplanter", y = "Mon (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -806,7 +806,7 @@ transplanter.Number.Mon.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Numbe
 transplanter.Number.Gra.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Gra)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2, color = "red") + 
   ylim(0, 8) +
   labs(title = "Granulocyte count - Control", x = "Transplanter", y = "Gra (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -818,7 +818,7 @@ transplanter.Number.Gra.control <- ggplot(all.control, aes(x=Transplanter, y=Num
 transplanter.Number.Gra.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Gra)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2, color = "blue") + 
   ylim(0, 8) +
   labs(title = "Granulocyte count - miR-532", x = "Transplanter", y = "Gra (10"^"3"*"/"~mu~"L)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -832,7 +832,7 @@ transplanter.Number.Gra.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Numbe
 transplanter.GFP.control <- ggplot(all.control, aes(x=Transplanter, y=GFP)) +
  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5, color = "red") + 
   ylim(0, 105) +
   labs(title = "PB Engraftment - Control", x = "Transplanter", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -844,7 +844,7 @@ transplanter.GFP.control <- ggplot(all.control, aes(x=Transplanter, y=GFP)) +
 transplanter.GFP.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=GFP)) +
 stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
   stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
-  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
+  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5, color = "blue") + 
   ylim(0, 105) +
   labs(title = "PB Engraftment - miR-532", x = "Transplanter", y = "GFP+ (%)") +
   theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
@@ -927,5 +927,44 @@ Number.Mon.transplanter
 Number.Gra.transplanter
 GFP.transplanter
 ```
+```{r fig3, fig.width=15, fig.height=10}
+fig3 <- ggarrange(transplanter.WBC.control, transplanter.WBC.miR532, transplanter.RBC.control, transplanter.RBC.miR532, transplanter.HGB.control, transplanter.HGB.miR532,  transplanter.PLT.control, transplanter.PLT.miR532,
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig3
+```   
+
+```{r fig4, fig.width=15, fig.height=10}
+fig4 <- ggarrange( transplanter.MCV.control, transplanter.MCV.miR532, transplanter.MCH.control, transplanter.MCH.miR532, transplanter.MCHC.control, transplanter.MCHC.miR532,  
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig4
+```  
+
+```{r fig5, fig.width=15, fig.height=10}
+fig5 <- ggarrange(transplanter.MPV.control, transplanter.MPV.miR532, transplanter.RDW.control, transplanter.RDW.miR532, transplanter.HCT.control, transplanter.HCT.miR532,
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig5
+```    
+
+```{r fig6, fig.width=15, fig.height=10}
+fig6 <- ggarrange(transplanter.Number.Lym.control, transplanter.Number.Lym.miR532, transplanter.Number.Mon.control, transplanter.Number.Mon.miR532, transplanter.Number.Gra.control, transplanter.Number.Gra.miR532, 
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig6
+```   
+   
+
+
+
+
+ 
+
+
+
+
+
+
+
 
 

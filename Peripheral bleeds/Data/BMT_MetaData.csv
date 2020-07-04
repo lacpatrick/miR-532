@@ -37,7 +37,7 @@ miR532.19,MB_miR BMT_532_3,325243,R,NA,Marion.van.den.Bosch,miR-532,Male,2018-01
 miR532.20,MB_miR BMT_532_4,325244,L,NA,Marion.van.den.Bosch,miR-532,Male,2018-01-09,2018-03-28,2019-03-15,50.29,Dead.endpoint,Healthy.miR532,end point
 miR532.21,MB_miR BMT_532_5,325245,B,NA,Marion.van.den.Bosch,miR-532,Male,2018-01-09,2018-03-28,2019-02-20,47,Dead.sick,Sick.532,general illness
 MIG.17,PL_miR BMT_MIG_1,562212,N,227131,Patrick.Lac,control,Male,2019-09-17,2019-12-05,NA,NA,Alive,Control,NA
-MIG.18,PL_miR BMT_MIG_2,562213,L,227131,Patrick.Lac,control,Male,2019-09-17,2019-12-05,NA,NA,Alive,Control,NA
+MIG.18,PL_miR BMT_MIG_2,562213,L,227131,Patrick.Lac,control,Male,2019-09-17,2019-12-05,2020-05-07,NA,Dead.sick,Sick.Control,"Difficulty breathing, pain, distended stomach - enlarged, splenomegaly, low platelets, high WBC"
 MIG.19,PL_miR BMT_MIG_3,562222,R,227133,Patrick.Lac,control,Male,2019-09-17,2019-12-19,NA,NA,Alive,Control,NA
 MIG.20,PL_miR BMT_MIG_4,562223,B,227133,Patrick.Lac,control,Male,2019-09-17,2019-12-19,NA,NA,Alive,Control,NA
 MIG.21,PL_miR BMT_MIG_5,575356,L,232617,Patrick.Lac,control,Male,2019-11-05,2020-01-24,NA,NA,Alive,Control,NA
