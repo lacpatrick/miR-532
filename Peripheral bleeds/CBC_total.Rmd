@@ -55,6 +55,13 @@ Data.sub.wk17 <- rbind(week16data, week17data, week18data)
 Data.sub.wk17$Weeks.post.transplant <- 17
 
 Data.sub.wk21 <- subset(Data.copy, Weeks.post.transplant == 21)
+
+week27data <- subset(Data.copy, Weeks.post.transplant == 27)
+week28data <- subset(Data.copy, Weeks.post.transplant == 28)
+Data.sub.wk27 <- rbind(week27data, week28data)
+Data.sub.wk17$Weeks.post.transplant <- 27
+
+write.xlx
 ```
 
 ``` {r WBC.wk5, fig.width=3,fig.height=3.5}

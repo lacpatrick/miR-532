@@ -1,0 +1,956 @@
+---
+title: "wk271_CBC"
+author: "Patrick Lac"
+date: "Oct 1, 2020"
+output: 
+  html_document: 
+    keep_md: yes
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, message = F, warning = F)
+```
+
+``` {r library, message = F}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(cowplot)
+library(gridExtra)
+library(rstatix)
+```
+
+Let's begin by importing our data:
+
+``` {r import.data}
+metadata <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/BMT_MetaData.csv")
+JL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/JL_532_BMT_Data.csv")
+MB_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/MB_532_BMT_Data.csv")
+PL_data <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Peripheral bleeds/Data/PL_532_BMT_Data.csv")
+```
+
+Next lets attach the different peripheral blood data together:
+``` {r combine.data}
+Total_PB_data <- rbind(JL_data, MB_data, PL_data)
+head(Total_PB_data)
+```
+
+We will make a copy of the total data for manipulation:
+``` {r data.copy}
+Data.copy <- Total_PB_data
+```
+What are the dimensions of our data?
+```{r dim.data}
+dim(Data.copy)
+```
+
+# Peripheral bleeds 11 weeks post-transplant:
+Next we will filter for CBC data at 11 weeks post-transplant
+``` {r filter.11weeks}
+week27data <- subset(Data.copy, Weeks.post.transplant == 27)
+week28data <- subset(Data.copy, Weeks.post.transplant == 28)
+Data.sub <- rbind(week27data, week28data)
+Data.sub$Weeks.post.transplant <- 27
+head(Data.sub)
+```
+
+Let's check the dimensions of our subsetted data:
+```{r dim.week5}
+dim(Data.sub)
+```
+
+Let's make dotplots for our CBC counts:
+
+``` {r WBC, fig.width=3,fig.height=3.5}
+WBC <- ggplot(Data.sub, aes(x=Treatment, y=WBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3) + 
+  ylim(0, 13) +
+  labs(title = "White blood cells", x = "Treatment", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+WBC
+```
+
+
+
+```{r RBC, fig.width=3,fig.height=3}
+RBC <- ggplot(Data.sub, aes(x=Treatment, y=RBC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5) + 
+  ylim(0, 16) +
+  labs(title = "Red blood cells", x = "Treatment", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=0.03, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RBC
+```
+
+
+
+```{r HGB, fig.width=3,fig.height=3}
+HGB <- ggplot(Data.sub, aes(x=Treatment, y=HGB, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5) + 
+  ylim(0, 25) +
+  labs(title = "Hemoglobin", x = "Treatment", y = "HGB (g/dL)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.07, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HGB
+```
+
+
+
+```{r HCT, fig.width=3,fig.height=3}
+HCT <- ggplot(Data.sub, aes(x=Treatment, y=HCT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Hematocrit", x = "Treatment", y = "HCT (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none")
+HCT
+```
+
+
+
+
+```{r MCV, fig.width=3,fig.height=3}
+MCV <- ggplot(Data.sub, aes(x=Treatment, y=MCV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5) + 
+  ylim(35, 55) +
+  labs(title = "Mean corpuscular volume", x = "Treatment", y = "MCV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCV
+```
+
+
+
+```{r MCH, fig.width=3,fig.height=3}
+MCH <- ggplot(Data.sub, aes(x=Treatment, y=MCH, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Mean corpuscular hemoglobin", x = "Treatment", y = "MCH (pg)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCH
+```
+
+
+
+```{r MCHC, fig.width=3,fig.height=3.2}
+MCHC <- ggplot(Data.sub, aes(x=Treatment, y=MCHC, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10) + 
+  ylim(10, 40) +
+  labs(title = "Mean corpuscular \n hemoglobin concentration", x = "Treatment", y = "MCHC (g/dl)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MCHC
+```
+
+```{r PLT, fig.width=3,fig.height=3}
+PLT <- ggplot(Data.sub, aes(x=Treatment, y=PLT, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30) + 
+  ylim(0, 1600) +
+  labs(title = "Platelets", x = "Treatment", y = "PLT (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+PLT
+```
+
+```{r MPV, fig.width=3,fig.height=3}
+MPV <- ggplot(Data.sub, aes(x=Treatment, y=MPV, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5) + 
+  ylim(0, 10) +
+  labs(title = "Mean platelet volume", x = "Treatment", y = "MPV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=0, vjust=0.2, size=4) +
+  theme(legend.position="none")
+MPV
+```
+
+```{r RDW, fig.width=3,fig.height=3}
+RDW <- ggplot(Data.sub, aes(x=Treatment, y=RDW, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6) + 
+  ylim(5, 30) +
+  labs(title = "RBC distribution width", x = "Treatment", y = "RDW (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="none")
+RDW
+```
+
+
+```{r Percent.Lym, fig.width=3,fig.height=3.5}
+Percent.Lym <- ggplot(Data.sub, aes(x=Treatment, y=Percent.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 80) +
+  labs(title = "Lymphocyte frequency", x = "Treatment", y = "Lym (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=9)", "miR-532 (n=12)")) +
+  stat_compare_means(method="t.test", hjust=-0.05, vjust=0.2, size=4) +
+  theme(legend.position="bottom")
+Percent.Lym
+```
+
+
+
+```{r Percent.Mon, fig.width=3,fig.height=3.5}
+Percent.Mon <- ggplot(Data.sub, aes(x=Treatment, y=Percent.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = .1, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 20) +
+  labs(title = "Monocyte frequency", x = "Treatment", y = "Mon (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=9)", "miR-532 (n=12)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="bottom")
+Percent.Mon
+```
+
+
+
+```{r Percent.Gra, fig.width=3,fig.height=3.5}
+Percent.Gra <- ggplot(Data.sub, aes(x=Treatment, y=Percent.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=20) + 
+  ylim(0, 80) +
+  labs(title = "Granulocyte frequency", x = "Treatment", y = "Gra (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=9)", "miR-532 (n=12)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="bottom")
+Percent.Gra
+```
+
+
+
+```{r Number.Lym, fig.width=3,fig.height=3}
+Number.Lym <- ggplot(Data.sub, aes(x=Treatment, y=Number.Lym, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4) + 
+  ylim(0, 8) +
+  labs(title = "Lymphocyte count", x = "Treatment", y = "Lym (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.04, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Lym
+```
+
+
+
+```{r Number.Mon, fig.width=3,fig.height=3}
+Number.Mon <- ggplot(Data.sub, aes(x=Treatment, y=Number.Mon, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7) + 
+  ylim(0, 1.25) +
+  labs(title = "Monocyte count", x = "Treatment", y = "Mon (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Mon
+```
+
+
+
+```{r Number.Gra, fig.width=3,fig.height=3}
+Number.Gra <- ggplot(Data.sub, aes(x=Treatment, y=Number.Gra, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2) + 
+  ylim(0, 8) +
+  labs(title = "Granulocyte count", x = "Treatment", y = "Gra (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="none")
+Number.Gra
+```
+
+```{r GFP, fig.width=4,fig.height=4}
+GFP <- ggplot(Data.sub, aes(x=Treatment, y=GFP, fill=Treatment)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5) + 
+  ylim(0, 105) +
+  labs(title = "PB Engraftment", x = "Treatment", y = "GFP+ (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Treatment", labels = c("control (n=20)", "miR-532 (n=28)")) +
+  stat_compare_means(method="t.test", hjust=-0.02, vjust=0.2, size=4) +
+  theme(legend.position="bottom")
+GFP
+```
+
+
+### Now let's arrange the plots:
+#### Figure 1
+```{r fig1, fig.width=10, fig.height=11}
+fig1 <- ggarrange(WBC, RBC, PLT, Number.Lym, Number.Mon, Number.Gra,
+          labels = "auto",
+          ncol=3, nrow=2, common.legend = T, legend="bottom")
+fig1
+```     
+
+#### Figure 2
+```{r fig2, fig.width=10, fig.height=11}
+fig2 <- ggarrange(HCT, MPV, HGB, RDW, MCV, MCH, MCHC,
+         labels = "auto",
+          ncol=3, nrow=3, common.legend = T, legend="bottom")
+fig2
+```    
+
+### Notes
+The four miR-532 mice with high granulocytes and lower peripheral blood engraftment (37-45% GFP+) at week 5:
+
+
+## Now lets separate the data based on the transplanter:
+
+We begin by joining the metadata to the week 11 CBC data
+``` {r data+metadata}
+alldata.sub <- left_join(metadata, Data.sub)
+all.control <- subset(alldata.sub, Treatment == "control")
+all.miR532 <-subset(alldata.sub, Treatment == "miR-532")
+```
+
+First, let's take a look at our statistics
+``` {r Tukey.miR532}
+tukey.WBC.mir532 <- aov(WBC ~ Transplanter, data=all.miR532) %>%
+  tukey_hsd()
+tukey.WBC.mir532
+
+tukey.RBC.mir532 <- aov(RBC ~ Transplanter, data=all.miR532) %>%
+   tukey_hsd()
+tukey.RBC.mir532
+
+tukey.HGB.mir532 <- aov(HGB ~ Transplanter, data=all.miR532) %>%
+ tukey_hsd()
+tukey.HGB.mir532
+
+tukey.HCT.mir532 <- aov(HCT ~ Transplanter, data=all.miR532) %>%
+ tukey_hsd()
+tukey.HCT.mir532
+
+tukey.MCV.mir532 <- aov(MCV ~ Transplanter, data=all.miR532) %>%
+   tukey_hsd()
+tukey.MCV.mir532
+
+tukey.MCH.mir532 <- aov(MCH ~ Transplanter, data=all.miR532) %>%
+   tukey_hsd()
+tukey.MCH.mir532
+
+tukey.MCHC.mir532 <- aov(MCHC ~ Transplanter, data=all.miR532) %>%
+ tukey_hsd()
+tukey.MCHC.mir532
+
+tukey.PLT.mir532 <- aov(PLT ~ Transplanter, data=all.miR532) %>%
+   tukey_hsd()
+tukey.PLT.mir532
+
+tukey.MPV.mir532 <- aov(MPV ~ Transplanter, data=all.miR532) %>%
+   tukey_hsd()
+tukey.MPV.mir532
+
+tukey.RDW.mir532 <- aov(RDW ~ Transplanter, data=all.miR532) %>%
+  tukey_hsd()
+tukey.RDW.mir532
+
+tukey.Number.Lym.mir532 <- aov(Number.Lym ~ Transplanter, data=all.miR532) %>%
+  tukey_hsd()
+tukey.Number.Lym.mir532
+
+tukey.Number.Mon.mir532 <- aov(Number.Mon ~ Transplanter, data=all.miR532) %>%
+ tukey_hsd()
+tukey.Number.Mon.mir532
+
+tukey.Number.Gra.mir532 <- aov(Number.Gra ~ Transplanter, data=all.miR532) %>%
+  tukey_hsd()
+tukey.Number.Gra.mir532
+
+tukey.GFP.mir532 <- aov(GFP ~ Transplanter, data=all.miR532) %>%
+  tukey_hsd()
+tukey.GFP.mir532
+```
+
+
+``` {r Tukey.control}
+tukey.WBC.control <- aov(WBC ~ Transplanter, data=all.control) %>%
+  tukey_hsd()
+tukey.WBC.control
+
+tukey.RBC.control <- aov(RBC ~ Transplanter, data=all.control) %>%
+   tukey_hsd()
+tukey.RBC.control
+
+tukey.HGB.control <- aov(HGB ~ Transplanter, data=all.control) %>%
+ tukey_hsd()
+tukey.HGB.control
+
+tukey.HCT.control <- aov(HCT ~ Transplanter, data=all.control) %>%
+ tukey_hsd()
+tukey.HCT.control
+
+tukey.MCV.control <- aov(MCV ~ Transplanter, data=all.control) %>%
+   tukey_hsd()
+tukey.MCV.control
+
+tukey.MCH.control <- aov(MCH ~ Transplanter, data=all.control) %>%
+   tukey_hsd()
+tukey.MCH.control
+
+tukey.MCHC.control <- aov(MCHC ~ Transplanter, data=all.control) %>%
+ tukey_hsd()
+tukey.MCHC.control
+
+tukey.PLT.control <- aov(PLT ~ Transplanter, data=all.control) %>%
+   tukey_hsd()
+tukey.PLT.control
+
+tukey.MPV.control <- aov(MPV ~ Transplanter, data=all.control) %>%
+   tukey_hsd()
+tukey.MPV.control
+
+tukey.RDW.control <- aov(RDW ~ Transplanter, data=all.control) %>%
+  tukey_hsd()
+tukey.RDW.control
+
+tukey.Number.Lym.control <- aov(Number.Lym ~ Transplanter, data=all.control) %>%
+  tukey_hsd()
+tukey.Number.Lym.control
+
+tukey.Number.Mon.control <- aov(Number.Mon ~ Transplanter, data=all.control) %>%
+ tukey_hsd()
+tukey.Number.Mon.control
+
+tukey.Number.Gra.control <- aov(Number.Gra ~ Transplanter, data=all.control) %>%
+  tukey_hsd()
+tukey.Number.Gra.control
+
+tukey.GFP.control <- aov(GFP ~ Transplanter, data=all.control) %>%
+  tukey_hsd()
+tukey.GFP.control
+```
+
+
+Now let's make dot plots for the CBC data by transplanter
+``` {r transplanter.WBC, fig.width=4, fig.height=4}
+transplanter.WBC.control <- ggplot(all.control, aes(x=Transplanter, y=WBC)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3, color = "red") + 
+  ylim(0, 13) +
+  labs(title = "White blood cells - Control", x = "Transplanter", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.WBC.control, y.position = c(12.1,13,11), label="p.adj")
+
+transplanter.WBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=WBC)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3, color = "blue") + 
+  ylim(0, 13) +
+  labs(title = "White blood cells - miR-532", x = "Transplanter", y = "WBC (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.WBC.mir532, y.position = c(10.5,12.5,11.5), label="p.adj")
+```
+
+``` {r transplanter.RBC, fig.width=4, fig.height=4}
+transplanter.RBC.control <- ggplot(all.control, aes(x=Transplanter, y=RBC)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5, color = "red") + 
+  ylim(0, 16) +
+  labs(title = "Red blood cells - Control", x = "Transplanter", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.RBC.control, y.position = c(14,15.6,14.6), label="p.adj")
+
+transplanter.RBC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RBC)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=3.5, color = "blue") + 
+  ylim(0, 16) +
+  labs(title = "Red blood cells - miR-532", x = "Transplanter", y = "RBC (10"^"6"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.RBC.mir532, y.position = c(14,15.6,14.6), label="p.adj")
+```
+
+``` {r transplanter.HGB, fig.width=4, fig.height=4}
+transplanter.HGB.control <- ggplot(all.control, aes(x=Transplanter, y=HGB)) +
+   stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5, color = "red") + 
+  ylim(0, 25) +
+  labs(title = "Hemoglobin - Control", x = "Transplanter", y = "HGB (g/dL)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.HGB.control, y.position = c(20,23,21.5), label="p.adj")
+
+transplanter.HGB.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HGB)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3.5, dotsize=5, color = "blue") + 
+  ylim(0, 25) +
+  labs(title = "Hemoglobin - miR-532", x = "Transplanter", y = "HGB (g/dL)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.HGB.mir532, y.position = c(20,23,21.5), label="p.adj")
+```
+
+``` {r transplanter.HCT, fig.width=4, fig.height=4}
+transplanter.HCT.control <- ggplot(all.control, aes(x=Transplanter, y=HCT)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2, color = "red") + 
+  ylim(0, 80) +
+  labs(title = "Hematocrit - Control", x = "Transplanter", y = "HCT (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.HCT.control, y.position = c(65,75,70), label="p.adj")
+
+transplanter.HCT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=HCT)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.8, dotsize=2, color = "blue") + 
+  ylim(0, 80) +
+  labs(title = "Hematocrit - miR-532", x = "Transplanter", y = "HCT (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.HCT.mir532, y.position = c(60,70,65), label="p.adj")
+```
+
+``` {r transplanter.MCV, fig.width=4, fig.height=4}
+transplanter.MCV.control <- ggplot(all.control, aes(x=Transplanter, y=MCV)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5, color = "red") + 
+  ylim(35, 55) +
+  labs(title = "Mean corpuscular volume - Control", x = "Transplanter", y = "MCV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MCV.control, y.position = c(50,54.5,53), label="p.adj")
+
+transplanter.MCV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCV)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=1.1, dotsize=0.5, color = "blue") + 
+  ylim(35, 55) +
+  labs(title = "Mean corpuscular volume - miR-532", x = "Transplanter", y = "MCV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MCV.mir532, y.position = c(50,53,51.5), label="p.adj")
+```
+
+``` {r transplanter.MCH, fig.width=4, fig.height=4}
+transplanter.MCH.control <- ggplot(all.control, aes(x=Transplanter, y=MCH)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5, color = "red") + 
+  ylim(0, 20) +
+  labs(title = "Mean corpuscular hemoglobin - Control", x = "Transplanter", y = "MCH (pg)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MCH.control, y.position = c(16,19,17.5), label="p.adj")
+
+transplanter.MCH.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCH)) +
+  stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=5, color = "blue") + 
+  ylim(0, 20) +
+  labs(title = "Mean corpuscular hemoglobin - miR-532", x = "Transplanter", y = "MCH (pg)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MCH.mir532, y.position = c(16,19,17.5), label="p.adj")
+```
+
+``` {r transplanter.MCHC, fig.width=4, fig.height=4}
+transplanter.MCHC.control <- ggplot(all.control, aes(x=Transplanter, y=MCHC)) +
+stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10, color = "red") + 
+  ylim(10, 40) +
+  labs(title = "Mean corpuscular \n hemoglobin concentration - Control", x = "Transplanter", y = "MCHC (g/dl)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MCHC.control, y.position = c(36,39,37.5), label="p.adj")
+
+transplanter.MCHC.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MCHC)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=3, dotsize=10, color = "blue") + 
+  ylim(10, 40) +
+  labs(title = "Mean corpuscular \n hemoglobin concentration - miR-532", x = "Transplanter", y = "MCHC (g/dl)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MCHC.mir532, y.position = c(36,39,37.5), label="p.adj")
+```
+
+``` {r transplanter.PLT, fig.width=4, fig.height=4}
+transplanter.PLT.control <- ggplot(all.control, aes(x=Transplanter, y=PLT)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30, color = "red") + 
+  ylim(0, 1600) +
+  labs(title = "Platelets - Control", x = "Transplanter", y = "PLT (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.PLT.control, y.position = c(1100,1400,1250), label="p.adj")
+
+transplanter.PLT.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=PLT)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 3, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 1, stackdir="center", stackratio=5, dotsize=30, color = "blue") + 
+  ylim(0, 1600) +
+  labs(title = "Platelets - miR-532", x = "Transplanter", y = "PLT (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.PLT.mir532, y.position = c(1460,1570,1460), label="p.adj")
+```
+
+``` {r transplanter.MPV, fig.width=4, fig.height=4}
+transplanter.MPV.control <- ggplot(all.control, aes(x=Transplanter, y=MPV)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5, color = "red") + 
+  ylim(0, 10) +
+  labs(title = "Mean platelet volume - Control", x = "Transplanter", y = "MPV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MPV.control, y.position = c(8.4,9.6,9), label="p.adj")
+
+transplanter.MPV.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=MPV)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2.5, color = "blue") + 
+  ylim(0, 10) +
+  labs(title = "Mean platelet volume - miR-532", x = "Transplanter", y = "MPV ("~mu~"m"^"3"*")") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.MPV.mir532, y.position = c(8.4,9.6,9), label="p.adj")
+```
+
+``` {r transplanter.RDW, fig.width=4, fig.height=4}
+transplanter.RDW.control <- ggplot(all.control, aes(x=Transplanter, y=RDW)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6, color = "red") + 
+  ylim(5, 30) +
+  labs(title = "RBC distribution width - Control", x = "Transplanter", y = "RDW (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.RDW.control, y.position = c(18,25,22.5), label="p.adj")
+
+transplanter.RDW.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=RDW)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = 0.1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2.5, dotsize=6, color = "blue") + 
+  ylim(5, 30) +
+  labs(title = "RBC distribution width - miR-532", x = "Transplanter", y = "RDW (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.RDW.mir532, y.position = c(22,27,25), label="p.adj")
+```
+
+``` {r transplanter.Number.Lym, fig.width=4, fig.height=4}
+transplanter.Number.Lym.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Lym)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4, color = "red") + 
+  ylim(0, 8) +
+  labs(title = "Lymphocyte count - Control", x = "Transplanter", y = "Lym (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.Number.Lym.control, y.position = c(6,7.9,7.4), label="p.adj")
+
+transplanter.Number.Lym.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Lym)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=3, dotsize=4, color = "blue") + 
+  ylim(0, 8) +
+  labs(title = "Lymphocyte count - miR-532", x = "Transplanter", y = "Lym (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.Number.Lym.mir532, y.position = c(6,7.7,7.2), label="p.adj")
+```
+
+``` {r transplanter.Number.Mon, fig.width=4, fig.height=4}
+transplanter.Number.Mon.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Mon)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7, color = "red") + 
+  ylim(0, 1.25) +
+  labs(title = "Monocyte count - Control", x = "Transplanter", y = "Mon (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.Number.Mon.control, y.position = c(1,1.2,1.1), label="p.adj")
+
+transplanter.Number.Mon.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Mon)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.05, stackdir="center", stackratio=1.2, dotsize=0.7, color = "blue") + 
+  ylim(0, 1.25) +
+  labs(title = "Monocyte count - miR-532", x = "Transplanter", y = "Mon (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.Number.Mon.mir532, y.position = c(1,1.2,1.1), label="p.adj")
+```
+
+``` {r transplanter.Number.Gra, fig.width=4, fig.height=4}
+transplanter.Number.Gra.control <- ggplot(all.control, aes(x=Transplanter, y=Number.Gra)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2, color = "red") + 
+  ylim(0, 8) +
+  labs(title = "Granulocyte count - Control", x = "Transplanter", y = "Gra (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.Number.Gra.control, y.position = c(6.5,7.5,5), label="p.adj")
+
+transplanter.Number.Gra.miR532 <- ggplot(all.miR532, aes(x=Transplanter, y=Number.Gra)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.1, stackdir="center", stackratio=2, dotsize=2, color = "blue") + 
+  ylim(0, 8) +
+  labs(title = "Granulocyte count - miR-532", x = "Transplanter", y = "Gra (10"^"3"*"/"~mu~"L)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=16)", "Marion van den Bosch (n=5)", "Patrick Lac (n=12)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.Number.Gra.mir532, y.position = c(6.5,7.5,5), label="p.adj")
+```
+
+``` {r transplanter.GFP, fig.width=4, fig.height=4}
+transplanter.GFP.control <- ggplot(all.control, aes(x=Transplanter, y=GFP)) +
+ stat_summary(fun.data=mean_sdl, fun.args=list(mult=1), binwidth = .1, geom="errorbar", color="black", size=1.2, width=0.1) +
+  stat_summary(fun.y=mean, geom="crossbar", color="black", size=0.6, width=0.2) +
+  geom_dotplot(binaxis="y", binwidth = 0.5, stackdir="center", stackratio=2, dotsize=5, color = "red") + 
+  ylim(0, 105) +
+  labs(title = "PB Engraftment - Control", x = "Transplanter", y = "GFP+ (%)") +
+  theme(plot.title = element_text(hjust=0.5), text=element_text(size=11)) +
+  scale_fill_discrete(name="Transplanter", labels = c("Jeff Lam (n=11)", "Marion van den Bosch (n=5)", "Patrick Lac (n=9)")) +
+  theme(legend.position="top", legend.title=element_text(size=15), legend.text = element_text(size=15)) +
+  theme(legend.position="none") +
+  stat_pvalue_manual(tukey.GFP.control, y.position = c(98,105,98), label="p.adj")
+
+
+```
+
+``` {r transplanter, fig.width=10, fig.height=4}
+WBC.transplanter <- ggarrange(transplanter.WBC.control, transplanter.WBC.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+RBC.transplanter <- ggarrange(transplanter.RBC.control, transplanter.RBC.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+HGB.transplanter <- ggarrange(transplanter.HGB.control, transplanter.HGB.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+HCT.transplanter <- ggarrange(transplanter.HCT.control, transplanter.HCT.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+MCV.transplanter <- ggarrange(transplanter.MCV.control, transplanter.MCV.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+MCH.transplanter <- ggarrange(transplanter.MCH.control, transplanter.MCH.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+MCHC.transplanter <- ggarrange(transplanter.MCHC.control, transplanter.MCHC.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+PLT.transplanter <- ggarrange(transplanter.PLT.control, transplanter.PLT.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+MPV.transplanter <- ggarrange(transplanter.MPV.control, transplanter.MPV.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+RDW.transplanter <- ggarrange(transplanter.RDW.control, transplanter.RDW.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+Number.Lym.transplanter <- ggarrange(transplanter.Number.Lym.control, transplanter.Number.Lym.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+Number.Mon.transplanter <- ggarrange(transplanter.Number.Mon.control, transplanter.Number.Mon.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+
+Number.Gra.transplanter <- ggarrange(transplanter.Number.Gra.control, transplanter.Number.Gra.miR532, 
+          labels = "auto",
+          ncol=2, nrow=1, common.legend = F, legend="none")
+
+
+
+WBC.transplanter
+RBC.transplanter
+HGB.transplanter
+HCT.transplanter
+MCV.transplanter
+MCH.transplanter
+MCHC.transplanter
+PLT.transplanter
+MPV.transplanter
+RDW.transplanter
+Number.Lym.transplanter
+Number.Mon.transplanter
+Number.Gra.transplanter
+```
+```{r fig3, fig.width=15, fig.height=10}
+fig3 <- ggarrange(transplanter.WBC.control, transplanter.WBC.miR532, transplanter.RBC.control, transplanter.RBC.miR532, transplanter.HGB.control, transplanter.HGB.miR532,  transplanter.PLT.control, transplanter.PLT.miR532,
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig3
+```   
+
+```{r fig4, fig.width=15, fig.height=10}
+fig4 <- ggarrange( transplanter.MCV.control, transplanter.MCV.miR532, transplanter.MCH.control, transplanter.MCH.miR532, transplanter.MCHC.control, transplanter.MCHC.miR532,  
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig4
+```  
+
+```{r fig5, fig.width=15, fig.height=10}
+fig5 <- ggarrange(transplanter.MPV.control, transplanter.MPV.miR532, transplanter.RDW.control, transplanter.RDW.miR532, transplanter.HCT.control, transplanter.HCT.miR532,
+         labels = "auto",
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig5
+```    
+
+```{r fig6, fig.width=15, fig.height=10}
+fig6 <- ggarrange(transplanter.Number.Lym.control, transplanter.Number.Lym.miR532, transplanter.Number.Mon.control, transplanter.Number.Mon.miR532, transplanter.Number.Gra.control, transplanter.Number.Gra.miR532, 
+          ncol=4, nrow=2, common.legend = T, legend="bottom")
+fig6
+```   
+   
+
+
+
+
+ 
+
+
+
+
+
+
+   
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+

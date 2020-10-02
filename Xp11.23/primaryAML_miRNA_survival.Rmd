@@ -25,10 +25,15 @@ miRNA_AMLPMP_Primary <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/X
 miRNA_TCGA_Primary <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table1_significant_miRNAs_by_Cox_in_TCGA.csv")
 ```
 
+```{r rename column}
+colnames(miRNA_AMLPMP_Primary)[1] <- "miRNA"
+colnames(miRNA_TCGA_Primary)[1] <- "miRNA"
+```
+
 Now let's filter for shared miRNAs only:
 ``` {r filter_shared_miRNAs}
-Primary_AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP_Primary, miRNA_AMLPMP_Primary$ï..miRNA %in% miRNA_TCGA_Primary$ï..miRNA)
-Primary_TCGA_shared_miRNA <- filter(miRNA_TCGA_Primary, miRNA_TCGA_Primary$ï..miRNA %in% miRNA_AMLPMP_Primary$ï..miRNA)
+Primary_AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP_Primary, miRNA_AMLPMP_Primary$miRNA %in% miRNA_TCGA_Primary$miRNA)
+Primary_TCGA_shared_miRNA <- filter(miRNA_TCGA_Primary, miRNA_TCGA_Primary$miRNA %in% miRNA_AMLPMP_Primary$miRNA)
 ```
 
 Next, we will order the shared miRNAs by significance
