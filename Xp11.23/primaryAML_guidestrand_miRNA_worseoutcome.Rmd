@@ -1,0 +1,68 @@
+---
+title: "primaryAML_guidestrand_significant_shared_miRNAs"
+author: "Patrick Lac"
+date: "Oct 26, 2020"
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+```
+
+```{r library}
+library(tidyverse)
+library(dplyr)
+library(RobustRankAggreg)
+library(RankAggreg)
+```
+
+Let's load in our data:
+
+``` {r data}
+miRNA_AMLPMP_Primary <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table11_significant_guide_miRNAs_shared_primary_AMLPMP.csv")
+miRNA_TCGA_Primary <- read.csv("F:/Git/PLac Analyses/miR-532 project/miR-532/Xp11.23/Data/Table12_significant_guide_miRNAs_shared_primary_TCGA.csv")
+```
+
+```{r rename column}
+colnames(miRNA_AMLPMP_Primary)[1] <- "miRNA"
+colnames(miRNA_TCGA_Primary)[1] <- "miRNA"
+```
+
+Now let's filter for shared miRNAs only:
+``` {r filter_shared_miRNAs}
+Primary_AMLPMP_shared_miRNA <- filter(miRNA_AMLPMP_Primary, miRNA_AMLPMP_Primary$miRNA %in% miRNA_TCGA_Primary$miRNA)
+Primary_TCGA_shared_miRNA <- filter(miRNA_TCGA_Primary, miRNA_TCGA_Primary$miRNA %in% miRNA_AMLPMP_Primary$miRNA)
+```
+
+Next, we will order the shared miRNAs by significance
+``` {r order_miRNAs}
+Primary_AMLPMP_ordered_shared_miRs <- Primary_AMLPMP_shared_miRNA[order(Primary_AMLPMP_shared_miRNA$p_value_wald_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+
+Primary_TCGA_ordered_shared_miRs <- Primary_TCGA_shared_miRNA[order(Primary_TCGA_shared_miRNA$p_value_wald_test),] %>%
+  pull(var=1) %>%
+  as.matrix(nrow=1)
+```
+
+Now, we will aggregate the ordered shared miRNAs 
+``` {r aggregate_miRNAs}
+Primary_glist <- c(Primary_AMLPMP_ordered_shared_miRs, Primary_TCGA_ordered_shared_miRs)
+
+miRNA_agg <- aggregateRanks(glist = Primary_glist, method = "RRA", exact = T)
+miRNA_agg
+```
+
+Now, we will aggregate the ordered shared miRNAs 
+``` {r aggregate_miRNAs}
+Primary_glist <- c(Primary_AMLPMP_ordered_shared_miRs, Primary_TCGA_ordered_shared_miRs)
+
+miRNA_agg <- aggregateRanks(glist = Primary_glist, method = "stuart", exact = T)
+miRNA_agg
+```
+
+The p-values are all at 1 - why? because this method relies on comparing relative positions between miRNAs within the data (eg. whether a>b in both datasets). The positions of the miRNAs are highly inconsistent relative to one another between these datasets so the package is unable to come up with a p-value
+
+
